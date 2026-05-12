@@ -1,7 +1,7 @@
 {
     "name": "Kubernetes Workshop Dev Environment",
     // "dockerFile": "Dockerfile",
-    "image": "ghcr.io/rfaes-com/compose-to-kubernetes:0.1.1",
+    "image": "ghcr.io/rfaes-com/compose-to-kubernetes:1.0.0",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {
             "version": "latest",

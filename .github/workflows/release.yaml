@@ -269,20 +269,3 @@ jobs:
       - name: Verify manifest
         run: |
           docker buildx imagetools inspect "${{ env.IMAGE_NAME }}:${{ needs.prepare.outputs.version }}"
-
-      - name: Update devcontainer.json image tag
-        run: |
-          set -euo pipefail
-          VERSION="${{ needs.prepare.outputs.version }}"
-          IMAGE="${{ env.IMAGE_NAME }}:${VERSION}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git checkout main
-          sed -i "s|\"image\": \"ghcr.io/rfaes-com/compose-to-kubernetes:[^\"]*\"|\"image\": \"${IMAGE}\"|" \
-            .devcontainer/devcontainer.json
-          echo "Updated devcontainer.json to use image: ${IMAGE}"
-          git add .devcontainer/devcontainer.json
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore: update devcontainer image to ${VERSION} [skip ci]"
-          git push origin main
