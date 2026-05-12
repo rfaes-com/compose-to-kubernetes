@@ -1,0 +1,46 @@
+# emptyDir Volume - Temporary storage
+# Data is deleted when Pod is terminated
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-demo
+  labels:
+    app: storage-demo
+spec:
+  containers:
+  - name: writer
+    image: busybox:1.36
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        while true; do
+          echo "Writer: $(date)" >> /cache/data.txt
+          echo "Written: $(tail -1 /cache/data.txt)"
+          sleep 5
+        done
+    volumeMounts:
+    - name: cache
+      mountPath: /cache
+  
+  - name: reader
+    image: busybox:1.36
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        sleep 3
+        while true; do
+          echo "Reader: Last line from cache:"
+          tail -1 /cache/data.txt
+          sleep 5
+        done
+    volumeMounts:
+    - name: cache
+      mountPath: /cache
+  
+  volumes:
+  - name: cache
+    emptyDir: {}  # Empty directory on the node
+    # Can also use:
+    # emptyDir:
+    #   medium: Memory  # Use tmpfs (RAM-backed)
+    #   sizeLimit: 100Mi

@@ -1,0 +1,67 @@
+# Kubernetes configs
+*.kubeconfig
+kubeconfig
+.kube/
+
+# kind
+.kind/
+
+# Helm
+.helm/
+charts/
+*.tgz
+
+# Flux
+flux-system/
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+!.vscode/settings.json
+.idea/
+*.iml
+*.code-workspace
+
+# Build artifacts
+*.tar
+*.tar.gz
+*.zip
+
+# Local test data
+test-data/
+scratch/
+tmp/
+
+# Podman/Docker
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Personal notes (allow people to take notes without committing)
+NOTES.md
+notes/
+my-*
+
+# Local environment overrides
+.env.local
+*.local
+
+# Generated SSL certs
+*.pem
+*.key
+*.crt
+*.csr
+
+# locks
+.devcontainer/devcontainer-lock.json

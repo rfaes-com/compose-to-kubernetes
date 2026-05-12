@@ -1,0 +1,10 @@
+apiVersion: v2
+name: simple-app
+description: A simple Helm chart example for the workshop
+type: application
+version: 1.0.0
+appVersion: "1.0"
+
+maintainers:
+  - name: Workshop Team
+    email: workshop@example.com

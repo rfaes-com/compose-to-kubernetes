@@ -1,0 +1,52 @@
+# ConfigMap with key-value pairs
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # Simple key-value pairs
+  database_host: "postgres.default.svc.cluster.local"
+  database_port: "5432"
+  database_name: "myapp"
+  log_level: "info"
+  max_connections: "100"
+---
+# Deployment using ConfigMap as environment variables
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        env:
+        # Individual environment variables from ConfigMap
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: database_host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: database_port
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: database_name
+        # All keys from ConfigMap as environment variables
+        envFrom:
+        - configMapRef:
+            name: app-config

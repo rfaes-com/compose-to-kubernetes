@@ -1,0 +1,34 @@
+# Docker Compose comparison for Deployment concepts
+
+version: '3.8'
+services:
+  # Simple replicated service
+  web:
+    image: nginx:1.21
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1        # Similar to maxSurge/maxUnavailable
+        delay: 10s
+        order: start-first    # Similar to RollingUpdate
+      restart_policy:
+        condition: any        # Similar to Kubernetes restartPolicy
+    ports:
+      - "8080:80"
+
+  # Service with resource limits
+  api:
+    image: nginx:1.21
+    deploy:
+      replicas: 4
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.25'
+          memory: 64M
+      update_config:
+        failure_action: rollback  # Similar to Kubernetes rollback
+    ports:
+      - "8081:80"

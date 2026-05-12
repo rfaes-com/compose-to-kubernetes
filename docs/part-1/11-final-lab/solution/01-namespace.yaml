@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+    environment: workshop
+    part: part-1-final-lab
+  annotations:
+    description: "Final lab application namespace"
+    created-by: "Compose to Kubernetes Workshop"

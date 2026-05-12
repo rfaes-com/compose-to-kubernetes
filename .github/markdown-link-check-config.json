@@ -1,0 +1,33 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^http://localhost"
+    },
+    {
+      "pattern": "^http://127.0.0.1"
+    },
+    {
+      "pattern": "^http://.*\\.local"
+    },
+    {
+      "pattern": "^https://.*\\.local"
+    },
+    {
+      "pattern": "^https://rfaes-com\\.github\\.io/",
+      "comment": "Ignore self-referential GitHub Pages links (site may not exist yet)"
+    },
+    {
+      "pattern": "^\\.\\./.*\\.md$",
+      "comment": "Ignore relative markdown file links"
+    },
+    {
+      "pattern": "^\\.\\.?/",
+      "comment": "Ignore all relative file system paths"
+    }
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "aliveStatusCodes": [200, 206],
+  "baseUrl": "file://"
+}

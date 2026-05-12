@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-clusterip-service
+  labels:
+    app: my-app
+spec:
+  type: ClusterIP  # Default service type (can be omitted)
+  selector:
+    app: my-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80        # Service port
+      targetPort: 8080  # Container port

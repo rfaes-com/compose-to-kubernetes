@@ -1,0 +1,71 @@
+# StatefulSet with volumeClaimTemplates
+# Each Pod gets its own PersistentVolumeClaim
+# PVCs are named: <volumeClaimTemplate name>-<statefulset name>-<ordinal>
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-headless
+  labels:
+    app: postgres
+spec:
+  clusterIP: None  # Headless service for StatefulSet
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    name: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16-alpine
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_PASSWORD
+          value: mysecretpassword
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+  volumeClaimTemplates:  # Creates PVC for each Pod
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: standard  # Use "local-path" in kind
+      resources:
+        requests:
+          storage: 5Gi
+
+# This creates:
+# Pod: postgres-0 with PVC: data-postgres-0
+# Pod: postgres-1 with PVC: data-postgres-1
+# Pod: postgres-2 with PVC: data-postgres-2
+#
+# Each Pod gets its own persistent storage that survives restarts
+# PVCs are NOT deleted when StatefulSet is deleted (manual cleanup needed)

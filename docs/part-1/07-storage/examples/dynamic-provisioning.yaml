@@ -1,0 +1,70 @@
+# Dynamic provisioning using StorageClass
+# PersistentVolume is created automatically
+# Note: Requires a StorageClass to be available (like local-path in kind)
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-dynamic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard  # Use "local-path" in kind with local-path-provisioner
+  resources:
+    requests:
+      storage: 2Gi
+---
+# Deployment using dynamic PVC
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-with-storage
+  labels:
+    app: storage-demo
+spec:
+  replicas: 1  # Only 1 replica because of ReadWriteOnce
+  selector:
+    matchLabels:
+      app: storage-demo
+  template:
+    metadata:
+      labels:
+        app: storage-demo
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/nginx/html
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  if [ ! -f /usr/share/nginx/html/index.html ]; then
+                    echo "<h1>Hello from persistent storage!</h1>" > /usr/share/nginx/html/index.html
+                    echo "<p>Pod: $HOSTNAME</p>" >> /usr/share/nginx/html/index.html
+                    echo "<p>Started: $(date)</p>" >> /usr/share/nginx/html/index.html
+                  fi
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: pvc-dynamic
+---
+# Service to access the app
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-demo-svc
+spec:
+  selector:
+    app: storage-demo
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

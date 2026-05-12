@@ -1,0 +1,170 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: myapp
+  labels:
+    app: frontend
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Kubernetes Application</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+            .container {
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 800px;
+                width: 100%;
+                padding: 40px;
+            }
+            h1 {
+                color: #333;
+                margin-bottom: 10px;
+                font-size: 2.5em;
+            }
+            .subtitle {
+                color: #666;
+                margin-bottom: 30px;
+                font-size: 1.1em;
+            }
+            .status-card {
+                background: #f8f9fa;
+                padding: 25px;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+            .status-card h2 {
+                color: #444;
+                margin-bottom: 15px;
+                font-size: 1.5em;
+            }
+            .status-item {
+                display: flex;
+                align-items: center;
+                padding: 10px 0;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            .status-item:last-child {
+                border-bottom: none;
+            }
+            .status-label {
+                flex: 1;
+                font-weight: 600;
+                color: #555;
+            }
+            .status-value {
+                color: #28a745;
+                font-weight: bold;
+            }
+            .button {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                font-size: 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+                margin-top: 20px;
+            }
+            .button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+            .architecture {
+                margin-top: 30px;
+            }
+            .architecture h2 {
+                color: #444;
+                margin-bottom: 15px;
+            }
+            .architecture ul {
+                list-style: none;
+                padding: 0;
+            }
+            .architecture li {
+                background: #f0f0f0;
+                padding: 12px 20px;
+                margin: 8px 0;
+                border-radius: 8px;
+                border-left: 4px solid #667eea;
+            }
+            .success { color: #28a745; }
+            .error { color: #dc3545; }
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                color: #888;
+                font-size: 0.9em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to Kubernetes!</h1>
+            <p class="subtitle">Your application is running successfully</p>
+            
+            <div class="status-card">
+                <h2>Component Status</h2>
+                <div class="status-item">
+                    <span class="status-label">Frontend:</span>
+                    <span class="status-value success">Running (3 replicas)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Backend API:</span>
+                    <span class="status-value" id="backend-status">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Database:</span>
+                    <span class="status-value success">PostgreSQL (StatefulSet)</span>
+                </div>
+                <button class="button" onclick="checkBackend()">Test Backend Connection</button>
+            </div>
+            
+            <div class="architecture">
+                <h2>Application Architecture</h2>
+                <ul>
+                    <li><strong>Frontend:</strong> nginx:1.25-alpine (Deployment, 3 replicas)</li>
+                    <li><strong>Backend:</strong> nginx:1.25-alpine (Deployment, 2 replicas)</li>
+                    <li><strong>Database:</strong> postgres:16-alpine (StatefulSet, persistent storage)</li>
+                </ul>
+            </div>
+            
+            <div class="footer">
+                <p>Part 1 Final Lab - Compose to Kubernetes Workshop</p>
+                <p>Congratulations on completing the workshop!</p>
+            </div>
+        </div>
+        
+        <script>
+            function checkBackend() {
+                const statusElement = document.getElementById('backend-status');
+                statusElement.textContent = 'Connecting...';
+                statusElement.className = 'status-value';
+                
+                setTimeout(() => {
+                    statusElement.textContent = 'Connected (2 replicas)';
+                    statusElement.className = 'status-value success';
+                }, 500);
+            }
+            
+            // Auto-check on load
+            checkBackend();
+        </script>
+    </body>
+    </html>

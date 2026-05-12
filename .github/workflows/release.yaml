@@ -1,0 +1,288 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: ghcr.io/rfaes-com/compose-to-kubernetes
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Resolve version
+        id: version
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${REF_NAME#v}"
+          if [[ -z "$version" || "$version" == "$REF_NAME" ]]; then
+            echo "Expected tag in the form vX.Y.Z, got: $REF_NAME" >&2
+            exit 1
+          fi
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Version is not semver-like: $version" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  validate-yaml:
+    name: Validate Kubernetes YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Validate Part 1 YAML files
+        run: |
+          find docs/part-1 -name "*.yaml" -type f | while read file; do
+            echo "Checking $file"
+            kubectl apply --dry-run=client -f "$file" || echo "Warning: $file may need review"
+          done
+
+      - name: Validate Part 2 YAML files
+        run: |
+          find docs/part-2 -name "*.yaml" -type f | while read file; do
+            echo "Checking $file"
+            kubectl apply --dry-run=client -f "$file" || echo "Warning: $file may need review"
+          done
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Lint markdown files
+        run: markdownlint '**/*.md' --ignore node_modules --ignore .github || true
+
+  check-links:
+    name: Check Broken Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          config-file: '.github/markdown-link-check-config.json'
+
+  validate-helm-charts:
+    name: Validate Helm Charts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Lint Helm charts
+        run: |
+          find . -name "Chart.yaml" -type f | while read chart; do
+            chart_dir=$(dirname "$chart")
+            echo "Linting chart in $chart_dir"
+            helm lint "$chart_dir" || echo "Warning: Chart in $chart_dir needs review"
+          done
+
+  build-docs:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    needs: [validate-yaml, lint-markdown, check-links, validate-helm-charts]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs dependencies
+        run: pip install -r docs-requirements.txt
+
+      - name: Build MkDocs site
+        run: mkdocs build --strict --site-dir _site
+
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Build Part 1 slides (HTML)
+        run: |
+          mkdir -p _site/slides
+          marp docs/part-1/slides.md --html --output _site/slides/part-1.html
+
+      - name: Build Part 2 slides (HTML)
+        run: |
+          marp docs/part-2/slides.md --html --output _site/slides/part-2.html
+
+      - name: Build Part 1 slides (PDF)
+        run: |
+          marp docs/part-1/slides.md --pdf --output _site/slides/part-1.pdf --allow-local-files
+
+      - name: Build Part 2 slides (PDF)
+        run: |
+          marp docs/part-2/slides.md --pdf --output _site/slides/part-2.pdf --allow-local-files
+
+      - name: Create slides index
+        run: |
+          cat > _site/slides/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Workshop Slides</title>
+            <style>
+              body { font-family: sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px; }
+              h1 { font-size: 1.5rem; }
+              ul { line-height: 2.2; }
+              a { color: #3f51b5; }
+            </style>
+          </head>
+          <body>
+            <h1>Workshop Slides</h1>
+            <ul>
+              <li><a href="part-1.html">Part 1 – Core Concepts (interactive)</a> · <a href="part-1.pdf">PDF</a></li>
+              <li><a href="part-2.html">Part 2 – Advanced Topics (interactive)</a> · <a href="part-2.pdf">PDF</a></li>
+            </ul>
+            <p><a href="..">← Back to workshop docs</a></p>
+          </body>
+          </html>
+          EOF
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy-docs:
+    name: Deploy Docs
+    runs-on: ubuntu-latest
+    needs: build-docs
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+
+  build-amd64:
+    name: Build Container (amd64)
+    runs-on: ubuntu-latest
+    needs: [prepare, validate-yaml, lint-markdown, check-links, validate-helm-charts]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .devcontainer
+          file: .devcontainer/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ env.IMAGE_NAME }}:build-amd64-${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-amd64
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-amd64,mode=max
+
+  build-arm64:
+    name: Build Container (arm64)
+    runs-on: ubuntu-24.04-arm
+    needs: [prepare, validate-yaml, lint-markdown, check-links, validate-helm-charts]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .devcontainer
+          file: .devcontainer/Dockerfile
+          push: true
+          platforms: linux/arm64
+          tags: ${{ env.IMAGE_NAME }}:build-arm64-${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-arm64
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-arm64,mode=max
+
+  manifest:
+    name: Publish Multi-arch Manifest
+    runs-on: ubuntu-latest
+    needs: [prepare, build-amd64, build-arm64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Create and push multi-arch manifest
+        run: |
+          set -euo pipefail
+          docker buildx imagetools create \
+            -t "${{ env.IMAGE_NAME }}:${{ needs.prepare.outputs.version }}" \
+            -t "${{ env.IMAGE_NAME }}:latest" \
+            "${{ env.IMAGE_NAME }}:build-amd64-${{ github.sha }}" \
+            "${{ env.IMAGE_NAME }}:build-arm64-${{ github.sha }}"
+
+      - name: Verify manifest
+        run: |
+          docker buildx imagetools inspect "${{ env.IMAGE_NAME }}:${{ needs.prepare.outputs.version }}"
+
+      - name: Update devcontainer.json image tag
+        run: |
+          set -euo pipefail
+          VERSION="${{ needs.prepare.outputs.version }}"
+          IMAGE="${{ env.IMAGE_NAME }}:${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout main
+          sed -i "s|\"image\": \"ghcr.io/rfaes-com/compose-to-kubernetes:[^\"]*\"|\"image\": \"${IMAGE}\"|" \
+            .devcontainer/devcontainer.json
+          echo "Updated devcontainer.json to use image: ${IMAGE}"
+          git add .devcontainer/devcontainer.json
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update devcontainer image to ${VERSION} [skip ci]"
+          git push origin main

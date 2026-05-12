@@ -1,0 +1,22 @@
+{
+    "cSpell.words": [
+        "apiserver",
+        "Cheatsheet",
+        "Cheatsheets",
+        "componentstatuses",
+        "configmap",
+        "coredns",
+        "gitops",
+        "kubeconfig",
+        "Kubelet",
+        "Kustomization",
+        "Marp",
+        "nslookup",
+        "persistentvolumeclaims",
+        "replicasets",
+        "resourcequota",
+        "rollouts",
+        "storageclass",
+        "traceroute"
+    ]
+}

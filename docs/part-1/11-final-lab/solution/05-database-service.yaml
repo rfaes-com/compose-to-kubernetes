@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: myapp
+  labels:
+    app: database
+    tier: data
+spec:
+  clusterIP: None  # Headless service for StatefulSet
+  selector:
+    app: database
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres

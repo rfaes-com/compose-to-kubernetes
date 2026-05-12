@@ -1,0 +1,92 @@
+# TLS/HTTPS Ingress Example
+# Demonstrates SSL termination with self-signed certificate
+
+# Note: Create the TLS secret first with:
+# openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+#   -keyout tls.key -out tls.crt -subj "/CN=secure.example.com"
+# kubectl create secret tls example-tls --cert=tls.crt --key=tls.key
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secure-app
+  template:
+    metadata:
+      labels:
+        app: secure-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: secure-app-html
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: secure-app-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Secure Application</title>
+      <style>
+        body { font-family: Arial; margin: 40px; }
+        .secure { color: green; font-weight: bold; }
+      </style>
+    </head>
+    <body>
+      <h1>Secure Application</h1>
+      <p class="secure">✓ This connection is secured with TLS/HTTPS</p>
+      <p>Traffic is encrypted between your browser and the Ingress Controller</p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: secure-app-service
+spec:
+  selector:
+    app: secure-app
+  ports:
+  - port: 80
+    targetPort: 80
+---
+# Ingress with TLS termination
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - secure.example.com
+    secretName: example-tls
+  rules:
+  - host: secure.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: secure-app-service
+            port:
+              number: 80

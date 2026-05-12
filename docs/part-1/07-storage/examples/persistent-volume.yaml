@@ -1,0 +1,61 @@
+# PersistentVolume - Cluster-wide storage resource
+# Note: In production, PVs are usually provisioned automatically by StorageClass
+# This is a manual (static) provisioning example
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-hostpath
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce  # Can be mounted by one node at a time
+  persistentVolumeReclaimPolicy: Retain  # Keep data when PVC is deleted
+  hostPath:
+    path: /mnt/data  # Path on the node (for testing only)
+    type: DirectoryOrCreate
+---
+# PersistentVolumeClaim - Request for storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-hostpath
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi  # Request 500Mi, will bind to 1Gi PV
+  # selector:  # Optional: select specific PV by labels
+  #   matchLabels:
+  #     type: local
+---
+# Pod using the PVC
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-pvc
+  labels:
+    app: storage-demo
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        echo "Pod started at: $(date)" >> /data/log.txt
+        echo "=== Current log file ==="
+        cat /data/log.txt
+        echo "========================"
+        echo "Data persists across Pod restarts!"
+        sleep 3600
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /data
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: pvc-hostpath

@@ -1,0 +1,114 @@
+# Development environment with quotas and limits
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    environment: dev
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+  namespace: development
+spec:
+  hard:
+    # Compute resources
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    
+    # Object counts
+    pods: "10"
+    services: "5"
+    persistentvolumeclaims: "3"
+    configmaps: "10"
+    secrets: "10"
+    
+    # Storage
+    requests.storage: 20Gi
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: dev-limits
+  namespace: development
+spec:
+  limits:
+  # Container defaults and limits
+  - type: Container
+    default:  # Default limits if not specified
+      cpu: 300m
+      memory: 512Mi
+    defaultRequest:  # Default requests if not specified
+      cpu: 100m
+      memory: 128Mi
+    max:  # Maximum allowed
+      cpu: "1"
+      memory: 2Gi
+    min:  # Minimum required
+      cpu: 50m
+      memory: 64Mi
+  
+  # Pod limits (all containers combined)
+  - type: Pod
+    max:
+      cpu: "2"
+      memory: 4Gi
+  
+  # PVC limits
+  - type: PersistentVolumeClaim
+    min:
+      storage: 1Gi
+    max:
+      storage: 10Gi
+---
+# Production environment with higher limits
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    environment: prod
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: prod-quota
+  namespace: production
+spec:
+  hard:
+    requests.cpu: "20"
+    requests.memory: 40Gi
+    limits.cpu: "40"
+    limits.memory: 80Gi
+    pods: "50"
+    services: "20"
+    persistentvolumeclaims: "10"
+    requests.storage: 100Gi
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: prod-limits
+  namespace: production
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: 500m
+      memory: 1Gi
+    defaultRequest:
+      cpu: 250m
+      memory: 512Mi
+    max:
+      cpu: "4"
+      memory: 8Gi
+    min:
+      cpu: 100m
+      memory: 128Mi
+  - type: Pod
+    max:
+      cpu: "8"
+      memory: 16Gi

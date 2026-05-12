@@ -1,0 +1,52 @@
+# Docker Compose with volumes
+services:
+  # Application with persistent data
+  app:
+    image: nginx:1.25-alpine
+    volumes:
+      - app-data:/usr/share/nginx/html  # Named volume (persistent)
+      - ./config:/etc/nginx/conf.d:ro   # Bind mount (local file)
+    ports:
+      - "8080:80"
+
+  # Database with persistent storage
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: secretpassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - db-data:/var/lib/postgresql/data  # Named volume
+    ports:
+      - "5432:5432"
+
+  # Temporary cache (no persistent storage needed)
+  cache:
+    image: redis:7.2-alpine
+    # No volumes - data is ephemeral
+    # Similar to emptyDir in Kubernetes
+
+volumes:
+  app-data:    # Docker manages these volumes
+  db-data:
+
+# Key Points:
+# 1. Named volumes (app-data, db-data) = PersistentVolumeClaims in K8s
+# 2. Volumes are automatically created and managed by Docker
+# 3. Data persists across container restarts
+# 4. Bind mounts (./config) = ConfigMaps or hostPath in K8s
+# 5. No volume = ephemeral storage (like emptyDir)
+
+# Kubernetes Equivalent:
+# - app-data volume → PVC with 1Gi storage
+# - db-data volume → PVC with 5Gi storage (or StatefulSet)
+# - ./config bind mount → ConfigMap mounted as volume
+# - cache (no volume) → emptyDir or no volume (ephemeral)
+
+# Storage Management:
+# Compose: docker volume ls, docker volume rm
+# K8s: kubectl get pvc, kubectl delete pvc
+
+# Backup/Restore:
+# Compose: docker run --volumes-from <container> to backup
+# K8s: VolumeSnapshots, backup tools, or manual copy

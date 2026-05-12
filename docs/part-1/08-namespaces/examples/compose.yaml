@@ -1,0 +1,71 @@
+# Docker Compose - Project-based isolation
+# In Compose, isolation is achieved through project names
+# Each docker-compose.yml in a different directory = different project
+
+# Project 1: development (in ./dev directory)
+# docker-compose up -d --project-name development
+services:
+  frontend:
+    image: nginx:1.25-alpine
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+  
+  backend:
+    image: nginx:1.25-alpine
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  app-network:
+
+# Project 2: production (in ./prod directory)
+# docker-compose up -d --project-name production
+# (same services but different project)
+
+# Kubernetes Equivalent:
+# Multiple namespaces with ResourceQuotas
+#
+# kubectl create namespace development
+# kubectl create namespace production
+#
+# Each namespace has its own:
+# - ResourceQuota (like deploy.resources.limits but cluster-wide)
+# - LimitRange (defaults for all pods)
+# - RBAC (who can access)
+# - NetworkPolicies (traffic isolation)
+
+# Key Differences:
+#
+# 1. Isolation Level:
+#    Compose: Project name + network
+#    K8s: Namespace + NetworkPolicy
+#
+# 2. Resource Limits:
+#    Compose: Per service (deploy.resources)
+#    K8s: Per namespace (ResourceQuota) + per pod (LimitRange)
+#
+# 3. DNS:
+#    Compose: service-name (within same project)
+#    K8s: service-name (same namespace) or service.namespace.svc.cluster.local
+#
+# 4. Management:
+#    Compose: docker-compose -p <project> up/down
+#    K8s: kubectl -n <namespace> apply/delete
+#
+# 5. Default Behavior:
+#    Compose: Project name from directory name
+#    K8s: "default" namespace unless specified
+#
+# 6. Cleanup:
+#    Compose: docker-compose down (removes project resources)
+#    K8s: kubectl delete namespace <name> (removes all resources in namespace)

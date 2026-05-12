@@ -1,0 +1,39 @@
+# Docker Compose comparison for Pod concepts
+
+version: '3'
+services:
+  # Simple single-container service
+  web:
+    image: nginx:latest
+    container_name: nginx-pod
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_PORT=80
+
+  # Multi-container example (similar to multi-container Pod)
+  # In Docker Compose, you'd typically use separate services
+  # In Kubernetes, these go in one Pod when they need to share resources
+  
+  app:
+    image: nginx:latest
+    volumes:
+      - logs:/var/log/nginx
+  
+  log-collector:
+    image: busybox:latest
+    command: ['sh', '-c', 'tail -f /logs/access.log']
+    volumes:
+      - logs:/logs
+    depends_on:
+      - app
+
+  # Resource-limited service
+  limited:
+    image: nginx:latest
+    mem_limit: 128m
+    cpus: 0.5
+    mem_reservation: 64m
+
+volumes:
+  logs:

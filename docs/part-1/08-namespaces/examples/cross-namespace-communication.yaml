@@ -1,0 +1,78 @@
+# Backend namespace and service
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backend
+  labels:
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  namespace: backend
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 8080
+    targetPort: 80
+---
+# Frontend namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend
+  labels:
+    tier: frontend
+---
+# Frontend pod that accesses backend service
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-client
+  namespace: frontend
+spec:
+  containers:
+  - name: client
+    image: curlimages/curl:8.5.0
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        echo "Testing cross-namespace communication..."
+        echo ""
+        echo "1. Short name (will fail - different namespace):"
+        curl -v http://api-service:8080 2>&1 || echo "Failed - service not in same namespace"
+        echo ""
+        echo "2. Fully qualified domain name (will succeed):"
+        curl -v http://api-service.backend.svc.cluster.local:8080
+        echo ""
+        echo "Sleeping..."
+        sleep 3600
+  restartPolicy: Never
+
+# DNS Resolution in Kubernetes:
+# Same namespace:     <service-name>
+# Cross namespace:    <service-name>.<namespace>.svc.cluster.local
+# External DNS:       <service-name>.<namespace>.svc.cluster.local

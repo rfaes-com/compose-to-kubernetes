@@ -1,0 +1,98 @@
+# Docker Compose equivalent for ConfigMaps and Secrets
+# Compose uses environment variables and config files similarly
+
+services:
+  # Using environment variables (like ConfigMap)
+  web:
+    image: nginx:1.25-alpine
+    environment:
+      # Direct values (similar to ConfigMap data)
+      DB_HOST: postgres.default.svc.cluster.local
+      DB_PORT: "5432"
+      DB_NAME: myapp
+      LOG_LEVEL: info
+      MAX_CONNECTIONS: "100"
+    # Or from .env file
+    # env_file:
+    #   - ./config.env
+    deploy:
+      replicas: 2
+
+  # Using config files (similar to ConfigMap volumes)
+  nginx-custom:
+    image: nginx:1.25-alpine
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
+      - source: index_html
+        target: /usr/share/nginx/html/index.html
+    deploy:
+      replicas: 2
+
+  # Using secrets (similar to K8s Secrets)
+  app-with-secrets:
+    image: busybox:1.36
+    command: >
+      sh -c "echo App started with credentials:
+             echo Username: $$DB_USERNAME
+             echo Reading connection string:
+             cat /run/secrets/connection-string
+             sleep 3600"
+    environment:
+      DB_USERNAME: admin
+    secrets:
+      - db_password
+      - connection-string
+      - api-key
+    deploy:
+      replicas: 2
+
+# Config definitions (like ConfigMaps)
+configs:
+  nginx_config:
+    file: ./nginx.conf
+  index_html:
+    content: |
+      <!DOCTYPE html>
+      <html>
+      <head><title>ConfigMap Demo</title></head>
+      <body>
+        <h1>Configuration from Config</h1>
+        <p>This is similar to K8s ConfigMap.</p>
+      </body>
+      </html>
+
+# Secret definitions (like K8s Secrets)
+secrets:
+  db_password:
+    file: ./db_password.txt
+  connection-string:
+    external: true  # Externally defined
+  api-key:
+    environment: "API_KEY"  # From environment variable
+
+# Key Differences:
+# 
+# 1. ConfigMap/Environment Variables:
+#    Compose: environment: key=value or env_file
+#    K8s: ConfigMap → envFrom or env with configMapKeyRef
+# 
+# 2. Configuration Files:
+#    Compose: configs: mounted at specified target path
+#    K8s: ConfigMap → volumeMounts with volumes
+# 
+# 3. Secrets:
+#    Compose: secrets: mounted in /run/secrets/ by default
+#    K8s: Secret → env (secretKeyRef) or volumeMounts
+# 
+# 4. External References:
+#    Compose: external: true (must exist before deployment)
+#    K8s: References by name (must exist in same namespace)
+# 
+# 5. Updates:
+#    Compose: Requires service restart for env vars
+#    K8s: ConfigMap/Secret changes auto-update volumes (env needs restart)
+# 
+# 6. Security:
+#    Compose: Secrets in /run/secrets/ (tmpfs)
+#    K8s: Secrets in tmpfs, RBAC-controlled, can be encrypted at rest

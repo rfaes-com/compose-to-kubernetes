@@ -1,0 +1,26 @@
+# kind cluster configuration: Simple (1 control-plane, 1 worker)
+# Suitable for: Part 1 basics, initial learning
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: workshop
+
+nodes:
+  # Control plane node with ports exposed for Ingress
+  - role: control-plane
+    extraPortMappings:
+      # HTTP
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      # HTTPS
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+      # NodePort range (optional, for specific services)
+      - containerPort: 30000
+        hostPort: 30000
+        protocol: TCP
+
+  # Single worker node
+  - role: worker

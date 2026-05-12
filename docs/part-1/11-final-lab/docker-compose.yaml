@@ -1,0 +1,100 @@
+# Docker Compose Configuration
+# This is the starting point - you'll convert this to Kubernetes
+
+services:
+  # Frontend web server
+  frontend:
+    image: nginx:1.25-alpine
+    container_name: myapp-frontend
+    ports:
+      - "8080:80"
+    environment:
+      - BACKEND_URL=http://backend:8080
+      - LOG_LEVEL=info
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Backend API server
+  backend:
+    image: nginx:1.25-alpine
+    container_name: myapp-backend
+    ports:
+      - "8081:80"
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_NAME=appdb
+      - DB_USER=appuser
+      - LOG_LEVEL=info
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - app-network
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # PostgreSQL database
+  database:
+    image: postgres:16-alpine
+    container_name: myapp-database
+    environment:
+      - POSTGRES_DB=appdb
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=secret123
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+
+# To run this:
+# docker-compose up -d
+#
+# Access frontend at: http://localhost:8080
+# Access backend at: http://localhost:8081
+#
+# To stop:
+# docker-compose down
+#
+# To stop and remove volumes:
+# docker-compose down -v

@@ -1,0 +1,120 @@
+{
+    "name": "Kubernetes Workshop Dev Environment",
+    // "dockerFile": "Dockerfile",
+    "image": "ghcr.io/rfaes-com/compose-to-kubernetes:0.1.1",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "dockerDashComposeVersion": "v2"
+        },
+        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+            "version": "latest",
+            "helm": "latest",
+            "minikube": "none"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Kubernetes and YAML
+                "ms-kubernetes-tools.vscode-kubernetes-tools",
+                "redhat.vscode-yaml",
+                "Tim-Koehler.helm-intellisense",
+                // Markdown and Marp
+                "marp-team.marp-vscode",
+                "yzhang.markdown-all-in-one",
+                "DavidAnson.vscode-markdownlint",
+                "bierner.markdown-preview-github-styles",
+                // Docker and Containers
+                "ms-azuretools.vscode-docker",
+                // Git
+                "eamodio.gitlens",
+                "GitHub.vscode-pull-request-github",
+                // Code quality
+                "editorconfig.editorconfig",
+                "streetsidesoftware.code-spell-checker",
+                // Utilities
+                "esbenp.prettier-vscode",
+                "tamasfe.even-better-toml"
+            ],
+            "settings": {
+                // Kubernetes
+                "vs-kubernetes": {
+                    "vs-kubernetes.helm-path": "/usr/local/bin/helm",
+                    "vs-kubernetes.kubectl-path": "/usr/local/bin/kubectl"
+                },
+                // YAML
+                "yaml.schemas": {
+                    "kubernetes": "*.yaml"
+                },
+                "yaml.format.enable": true,
+                "yaml.validate": true,
+                "yaml.completion": true,
+                // Markdown
+                "markdown.preview.breaks": true,
+                "markdown.extension.toc.levels": "2..6",
+                "[markdown]": {
+                    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+                    "editor.formatOnSave": true,
+                    "editor.wordWrap": "on"
+                },
+                "markdownlint.config": {
+                    "MD013": false,
+                    "MD033": false,
+                    "MD041": false
+                },
+                // Marp
+                "markdown.marp.enableHtml": true,
+                "markdown.marp.themes": [],
+                // Editor
+                "editor.formatOnSave": true,
+                "editor.rulers": [
+                    80,
+                    120
+                ],
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true,
+                // Terminal
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash",
+                        "icon": "terminal-bash"
+                    }
+                }
+            }
+        }
+    },
+    "runArgs": [
+        "--privileged"
+    ],
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "remoteUser": "vscode",
+    "forwardPorts": [
+        8080,
+        8443,
+        30000,
+        30001,
+        30002
+    ],
+    "portsAttributes": {
+        "8080": {
+            "label": "HTTP Services",
+            "onAutoForward": "notify"
+        },
+        "8443": {
+            "label": "HTTPS Services",
+            "onAutoForward": "notify"
+        },
+        "30000": {
+            "label": "NodePort 30000",
+            "onAutoForward": "silent"
+        }
+    }
+}

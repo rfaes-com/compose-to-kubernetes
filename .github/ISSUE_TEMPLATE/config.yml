@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/rfaes/compose-to-kubernetes/discussions
+    about: For general questions, ideas, or workshop feedback, start a discussion
+  - name: Documentation
+    url: https://github.com/rfaes/compose-to-kubernetes/blob/main/README.md
+    about: Check the documentation before opening an issue
+  - name: Security Vulnerability
+    url: https://github.com/rfaes/compose-to-kubernetes/blob/main/SECURITY.md
+    about: Report security vulnerabilities privately

@@ -1,0 +1,52 @@
+# Multi-port Service - Expose multiple ports from the same application
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+  labels:
+    app: webapp
+spec:
+  type: ClusterIP
+  selector:
+    app: webapp
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: metrics
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+---
+# Deployment with multiple ports
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.25-alpine
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: metrics
+          containerPort: 9090
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            # Start nginx on port 8080
+            sed -i 's/listen.*80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+            nginx -g 'daemon off;'

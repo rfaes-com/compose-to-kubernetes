@@ -1,0 +1,10 @@
+# Simple namespace definition
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    environment: dev
+    team: platform
+  annotations:
+    description: "Development environment for testing new features"
