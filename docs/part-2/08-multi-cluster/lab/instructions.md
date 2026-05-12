@@ -123,7 +123,7 @@ Create a local directory structure that could manage both clusters from Git.
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Creating kind clusters</summary>
 
 Record your current context:
@@ -149,7 +149,7 @@ kubectl config get-contexts
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: Using explicit contexts</summary>
 
 Set context variables:
@@ -168,7 +168,7 @@ kubectl --context=$SECONDARY get nodes
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: Making the response cluster-specific</summary>
 
 Use nginx and write the response from an environment variable:
@@ -188,7 +188,7 @@ For the shared manifest, start with `primary`; patch it for secondary later.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Applying to primary</summary>
 
 Apply with an explicit context:
@@ -209,7 +209,7 @@ kubectl --context=$PRIMARY port-forward -n multi-cluster-demo svc/hello 8080:80
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: Patching secondary</summary>
 
 Apply the same files to secondary, then patch the environment variable:
@@ -234,7 +234,7 @@ kubectl --context=$SECONDARY port-forward -n multi-cluster-demo svc/hello 8081:8
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Comparing clusters</summary>
 
 Run the same commands against both contexts:
@@ -252,7 +252,7 @@ kubectl --context=$PRIMARY scale deployment hello -n multi-cluster-demo --replic
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Simulating failover</summary>
 
 Scale primary down:
@@ -276,7 +276,7 @@ kubectl --context=$PRIMARY scale deployment hello -n multi-cluster-demo --replic
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 8: Fleet directory structure</summary>
 
 Create directories:

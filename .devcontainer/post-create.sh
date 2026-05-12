@@ -45,7 +45,6 @@ check_tool marp
 check_tool markdownlint
 check_tool kubeconform
 check_tool yq
-check_tool make
 
 # Create helpful message
 echo ""

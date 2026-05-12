@@ -495,7 +495,7 @@ Now that we can deploy and scale applications, we need a way for them to communi
 4. What's the difference between `maxSurge` and `maxUnavailable`?
 5. How do you rollback a failed deployment?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **Deployment manages ReplicaSets, ReplicaSets manage Pods. Deployment provides declarative updates and rollback.**

@@ -118,7 +118,7 @@ Observe traffic split and then choose a final action.
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Creating and selecting the namespace</summary>
 
 Create the namespace:
@@ -135,7 +135,7 @@ kubectl config set-context --current --namespace=deploy-strategy-lab
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: Rolling update strategy fields</summary>
 
 The strategy belongs under `spec.strategy`:
@@ -162,7 +162,7 @@ readinessProbe:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: Watching rollout progress</summary>
 
 Update the image:
@@ -187,7 +187,7 @@ kubectl rollout undo deployment/rollout-demo
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Creating color-coded pages</summary>
 
 Use nginx with a shell command that writes `index.html` before starting nginx:
@@ -210,7 +210,7 @@ selector:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: Switching a Service selector</summary>
 
 Port-forward the Service:
@@ -233,7 +233,7 @@ kubectl patch service web -p '{"spec":{"selector":{"app":"web","version":"blue"}
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Canary Service selector</summary>
 
 The canary Service should select only the shared app label:
@@ -247,7 +247,7 @@ Kubernetes load balances across all matching Pods. With 4 stable Pods and 1 cana
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Counting stable and canary responses</summary>
 
 Port-forward the canary Service:

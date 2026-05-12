@@ -146,7 +146,7 @@ enabled: FALSE
 enabled: no
 ```
 
-## 🚦 Special Characters
+## Special Characters
 
 ### Comments
 
@@ -266,7 +266,7 @@ cpu: "0.5"           # CORRECT
 replicas: 3          # CORRECT (integer)
 ```
 
-## 🔍 Validation Tools
+## Validation Tools
 
 ### kubectl (Kubernetes)
 
@@ -361,7 +361,7 @@ spec:
     - containerport: 80
 ```
 
-<details>
+<details markdown="1">
 <summary>Click to see the corrections</summary>
 
 ```yaml

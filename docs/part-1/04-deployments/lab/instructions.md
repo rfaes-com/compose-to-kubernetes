@@ -103,7 +103,7 @@ kubectl get deployments
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1.1: Creating Deployment</summary>
 
 Imperative method:
@@ -116,7 +116,7 @@ Or declarative with YAML (recommended).
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3.1: Scaling</summary>
 
 ```bash
@@ -125,7 +125,7 @@ kubectl scale deployment <name> --replicas=<count>
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4.1: Updating image</summary>
 
 ```bash
@@ -140,7 +140,7 @@ kubectl set image deployment/web-app nginx=nginx:1.22
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5.4: Rollback</summary>
 
 ```bash

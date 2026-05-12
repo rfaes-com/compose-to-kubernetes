@@ -450,7 +450,7 @@ Now that your environment is ready, let's dive into Kubernetes resources!
 4. What does a context contain?
 5. How do you view Pods in all namespaces?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **`kubectl get nodes`**

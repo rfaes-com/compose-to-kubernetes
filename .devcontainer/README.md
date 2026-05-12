@@ -28,7 +28,7 @@ The devcontainer provides a fully configured development environment with:
 - **YAML Support** - YAML editing and validation
 - **Helm IntelliSense** - Helm chart editing
 - **Marp** - Markdown presentation preview and export
-- **Markdown Tools** - Enhanced markdown editing
+- **Markdown Tools** - Enhanced markdown editing, linting, and Mermaid preview
 - **Docker** - Container management
 - **GitLens** - Advanced Git integration
 - **EditorConfig** - Consistent coding styles

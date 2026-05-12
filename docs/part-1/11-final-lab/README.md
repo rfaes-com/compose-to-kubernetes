@@ -17,23 +17,16 @@ This comprehensive lab ties together everything from Part 1. You'll deploy a com
 
 ## Application Architecture
 
-```text
-┌────────────┐
-│  Frontend  │  nginx serving static files
-│  (nginx)   │  Port: 80
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Backend   │  API server
-│  (nginx)   │  Port: 8080
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Database  │  PostgreSQL
-│ (postgres) │  Port: 5432
-└────────────┘
+```mermaid
+flowchart TB
+    Frontend["Frontend<br/>(nginx)<br/>nginx serving static files<br/>Port: 80"]
+
+    Backend["Backend<br/>(nginx)<br/>API server<br/>Port: 8080"]
+
+    Database["Database<br/>(postgres)<br/>PostgreSQL<br/>Port: 5432"]
+
+    Frontend --> Backend
+    Backend --> Database
 ```
 
 ## Starting Point: Docker Compose
@@ -215,7 +208,7 @@ Test the complete application:
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Create Namespace</summary>
 
 ```bash
@@ -232,7 +225,7 @@ EOF
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: Create Database Secret</summary>
 
 ```bash
@@ -245,7 +238,7 @@ kubectl create secret generic db-credentials \
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: Create Database PVC</summary>
 
 ```yaml
@@ -265,7 +258,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Deploy PostgreSQL StatefulSet</summary>
 
 ```yaml
@@ -339,7 +332,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: Create Database Service</summary>
 
 ```yaml
@@ -362,7 +355,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Create Backend ConfigMap</summary>
 
 ```bash
@@ -375,7 +368,7 @@ kubectl create configmap backend-config \
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Deploy Backend</summary>
 
 ```yaml
@@ -453,7 +446,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 8: Create Backend Service</summary>
 
 ```yaml
@@ -476,7 +469,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 9: Create Frontend ConfigMap</summary>
 
 ```yaml
@@ -527,7 +520,7 @@ data:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 10: Deploy Frontend</summary>
 
 ```yaml
@@ -590,7 +583,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 11: Create Frontend Service</summary>
 
 ```yaml

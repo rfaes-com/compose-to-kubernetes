@@ -27,16 +27,16 @@ Time-series database and monitoring system:
 
 **Architecture:**
 
-```text
-┌───────────┐       ┌──────────────┐
-│  Targets  │◄──────│  Prometheus  │
-│(exporters)│ scrape│  (metrics)   │
-└───────────┘       └───────┬──────┘
-                            │
-┌───────────┐               │
-│  Grafana  │◄──────────────┘
-│(dashboards)│    query
-└───────────┘
+```mermaid
+flowchart LR
+    Targets["Targets<br/>(exporters)"]
+
+    Prometheus["Prometheus<br/>(metrics)"]
+
+    Grafana["Grafana<br/>(dashboards)"]
+
+    Prometheus -->|scrape| Targets
+    Grafana -->|query| Prometheus
 ```
 
 **Key Concepts:**
@@ -189,7 +189,7 @@ spec:
       annotations:
         summary: "High error rate detected"
         description: "Error rate is {{ $value | humanizePercentage }}"
-    
+
     - alert: PodCrashLooping
       expr: |
         rate(kube_pod_container_status_restarts_total[15m]) > 0
@@ -212,7 +212,7 @@ stringData:
   alertmanager.yaml: |
     global:
       slack_api_url: 'https://hooks.slack.com/services/XXX'
-    
+
     route:
       receiver: 'slack-notifications'
       group_by: ['alertname', 'cluster']
@@ -223,14 +223,14 @@ stringData:
       - match:
           severity: critical
         receiver: 'pagerduty'
-    
+
     receivers:
     - name: 'slack-notifications'
       slack_configs:
       - channel: '#alerts'
         title: '{{ .GroupLabels.alertname }}'
         text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
-    
+
     - name: 'pagerduty'
       pagerduty_configs:
       - service_key: 'YOUR_KEY'
@@ -332,10 +332,10 @@ data:
   promtail.yaml: |
     server:
       http_listen_port: 9080
-    
+
     clients:
       - url: http://loki:3100/loki/api/v1/push
-    
+
     scrape_configs:
       - job_name: kubernetes-pods
         kubernetes_sd_configs:

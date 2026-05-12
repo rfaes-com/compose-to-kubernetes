@@ -48,29 +48,28 @@ mychart/
 ```
 
 ### Release
-An instance of a chart running in a Kubernetes cluster.  
+An instance of a chart running in a Kubernetes cluster.
 One chart can have multiple releases (e.g., `myapp-dev`, `myapp-prod`).
 
 ### Repository
-A collection of charts that can be shared and downloaded.  
+A collection of charts that can be shared and downloaded.
 Public repos: **ArtifactHub**, Bitnami, etc.
 
 ## Helm Architecture
 
 Helm 3 architecture (simplified from Helm 2):
 
-```text
-┌─────────────┐
-│  Helm CLI   │ (your machine)
-└──────┬──────┘
-       │ kubectl-like
-       ▼
-┌─────────────┐
-│ Kubernetes  │
-│   Cluster   │
-│             │
-│ Releases    │ (stored as Secrets)
-└─────────────┘
+```mermaid
+flowchart TB
+    Helm["Helm CLI<br/>(your machine)"]
+
+    subgraph Cluster["Kubernetes Cluster"]
+        direction TB
+
+        Releases["Releases<br/>(stored as Secrets)"]
+    end
+
+    Helm -->|kubectl-like| Releases
 ```
 
 **Note:** Helm 3 removed Tiller (server-side component) for better security.
@@ -444,7 +443,7 @@ helm history myrelease
 
 REVISION  UPDATED                   STATUS      DESCRIPTION
 1         Mon Jan 1 10:00:00 2024   superseded  Install complete
-2         Mon Jan 1 11:00:00 2024   superseded  Upgrade complete  
+2         Mon Jan 1 11:00:00 2024   superseded  Upgrade complete
 3         Mon Jan 1 12:00:00 2024   deployed    Upgrade complete
 
 # Rollback to previous version

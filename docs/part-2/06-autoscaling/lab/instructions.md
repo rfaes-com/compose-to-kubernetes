@@ -115,7 +115,7 @@ Create a Deployment that cannot be autoscaled by CPU, then explain why.
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Metrics Server on kind</summary>
 
 Install Metrics Server:
@@ -142,7 +142,7 @@ kubectl top pods --all-namespaces
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: Resource requests for HPA</summary>
 
 HPA CPU utilization needs CPU requests. The container resources should look like:
@@ -161,7 +161,7 @@ The Service selector should match `app=php-apache`.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: CPU utilization metric</summary>
 
 An `autoscaling/v2` HPA can use this metric block:
@@ -184,7 +184,7 @@ kubectl get hpa php-apache --watch
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Generating CPU load</summary>
 
 Run a temporary busybox loop:
@@ -204,7 +204,7 @@ kubectl top pods -n autoscaling-lab
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: HPA behavior policies</summary>
 
 Scale-down behavior can be slower than scale-up:
@@ -231,7 +231,7 @@ behavior:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Stopping load</summary>
 
 Delete the load generator:
@@ -249,7 +249,7 @@ kubectl get deployment php-apache --watch
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Missing CPU requests</summary>
 
 Create the HPA:

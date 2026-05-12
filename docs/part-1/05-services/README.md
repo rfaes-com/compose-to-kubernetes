@@ -276,14 +276,14 @@ spec:
 
 Services automatically load balance across healthy Pods:
 
-```text
-Client Request
-      ↓
-   Service
-      ↓
-   ┌──┴──┬──────┐
-   ↓     ↓      ↓
- Pod1  Pod2   Pod3
+```mermaid
+flowchart TB
+    Client["Client Request"]
+        --> Service["Service"]
+
+    Service --> Pod1["Pod1"]
+    Service --> Pod2["Pod2"]
+    Service --> Pod3["Pod3"]
 ```
 
 **Algorithm:** Round-robin (default) or session affinity
@@ -516,7 +516,7 @@ Now we can deploy and expose applications. Let's configure them!
 4. What happens if a Service's selector doesn't match any Pods?
 5. How can you check which Pods a Service is routing to?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **Services provide stable IP addresses and DNS names for ephemeral Pods with changing IPs**

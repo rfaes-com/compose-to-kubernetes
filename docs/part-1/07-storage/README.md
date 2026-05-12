@@ -91,30 +91,19 @@ spec:
 
 **PersistentVolumeClaim (PVC)**: User request for storage
 
-```text
-┌─────────────────────────────────────────┐
-│            Storage Layer                │
-│  (Network Storage, Cloud Disks, etc.)   │
-└───────────┬─────────────────────────────┘
-            │
-┌───────────▼─────────────────────────────┐
-│      PersistentVolume (PV)              │
-│  • Storage implementation               │
-│  • Admin-provisioned or dynamic         │
-│  • Cluster-wide resource                │
-└───────────┬─────────────────────────────┘
-            │ Bound
-┌───────────▼─────────────────────────────┐
-│   PersistentVolumeClaim (PVC)           │
-│  • Storage request by user              │
-│  • Specifies size and access mode       │
-│  • Namespace-scoped                     │
-└───────────┬─────────────────────────────┘
-            │ Referenced
-┌───────────▼─────────────────────────────┐
-│           Pod                           │
-│  • Mounts PVC as volume                 │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    Storage["Storage Layer<br/>(Network Storage, Cloud Disks, etc.)"]
+
+    PV["PersistentVolume (PV)<br/>• Storage implementation<br/>• Admin-provisioned or dynamic<br/>• Cluster-wide resource"]
+
+    PVC["PersistentVolumeClaim (PVC)<br/>• Storage request by user<br/>• Specifies size and access mode<br/>• Namespace-scoped"]
+
+    Pod["Pod<br/>• Mounts PVC as volume"]
+
+    Storage --> PV
+    PV -- Bound --> PVC
+    PVC -- Referenced --> Pod
 ```
 
 ### 4. Access Modes

@@ -131,7 +131,7 @@ Add basic NetworkPolicies for tenant isolation.
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Pod Security namespace labels</summary>
 
 Pod Security labels live on the Namespace:
@@ -147,7 +147,7 @@ Repeat for `team-beta`.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: ServiceAccount token mounting</summary>
 
 Disable automatic token mounting in the ServiceAccount:
@@ -163,7 +163,7 @@ automountServiceAccountToken: false
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: Developer Role rules</summary>
 
 Deployments are in the `apps` API group. Pods, Services, ConfigMaps, Secrets, and Pod logs are in the core API group:
@@ -183,7 +183,7 @@ rules:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Testing permissions</summary>
 
 Use `kubectl auth can-i` with `--as`:
@@ -204,7 +204,7 @@ kubectl auth can-i list pods \
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: ResourceQuota and LimitRange</summary>
 
 ResourceQuota example:
@@ -241,7 +241,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Restricted security context</summary>
 
 Use a non-root nginx image and this security context shape:
@@ -267,7 +267,7 @@ securityContext:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Testing Pod Security admission</summary>
 
 Try a privileged Pod:
@@ -281,7 +281,7 @@ The restricted profile should reject it.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 8: NetworkPolicy selectors</summary>
 
 A default deny ingress policy selects all Pods:

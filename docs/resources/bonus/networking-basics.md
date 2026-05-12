@@ -44,7 +44,7 @@ localhost       # DNS name for 127.0.0.1
 - Binding to `0.0.0.0` means "listen on all interfaces"
 - Binding to `127.0.0.1` means "only accept connections from this Pod"
 
-## 🔌 Ports
+## Ports
 
 ### Port Numbers
 
@@ -232,10 +232,14 @@ spec:
 
 Distributing traffic across multiple servers.
 
-```text
-                    ┌──→ Pod 1 (10.244.0.5)
-Client → Service → ├──→ Pod 2 (10.244.0.6)
-                    └──→ Pod 3 (10.244.0.7)
+```mermaid
+flowchart LR
+    Client["Client"]
+        --> Service["Service"]
+
+    Service --> Pod1["Pod 1<br/>10.244.0.5"]
+    Service --> Pod2["Pod 2<br/>10.244.0.6"]
+    Service --> Pod3["Pod 3<br/>10.244.0.7"]
 ```
 
 ### Load Balancing Algorithms
@@ -268,37 +272,32 @@ Client → Service → ├──→ Pod 2 (10.244.0.6)
 
 ### Network Diagram
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│  Kubernetes Cluster                                     │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │  Node (e.g., 192.168.1.10)                       │  │
-│  │                                                   │  │
-│  │  ┌───────────────┐  ┌───────────────┐           │  │
-│  │  │ Pod           │  │ Pod           │           │  │
-│  │  │ IP: 10.244.0.5│  │ IP: 10.244.0.6│           │  │
-│  │  │               │  │               │           │  │
-│  │  │ ┌──────────┐  │  │ ┌──────────┐  │           │  │
-│  │  │ │Container │  │  │ │Container │  │           │  │
-│  │  │ │ :80      │  │  │ │ :8080    │  │           │  │
-│  │  │ └──────────┘  │  │ └──────────┘  │           │  │
-│  │  └───────────────┘  └───────────────┘           │  │
-│  │         │                    │                   │  │
-│  │         └────────┬───────────┘                   │  │
-│  │                  │                               │  │
-│  │         ┌────────▼────────┐                      │  │
-│  │         │ Service         │                      │  │
-│  │         │ IP: 10.96.0.10  │                      │  │
-│  │         │ Port: 80        │                      │  │
-│  │         └─────────────────┘                      │  │
-│  └──────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────┘
-                           │
-                    ┌──────▼──────┐
-                    │   External  │
-                    │   Traffic   │
-                    └─────────────┘
+```mermaid
+flowchart TB
+    subgraph Cluster["Kubernetes Cluster"]
+        direction TB
+
+        subgraph Node["Node (e.g., 192.168.1.10)"]
+            direction TB
+
+            subgraph Pod1["Pod<br/>IP: 10.244.0.5"]
+                direction TB
+                C1["Container<br/>:80"]
+            end
+
+            subgraph Pod2["Pod<br/>IP: 10.244.0.6"]
+                direction TB
+                C2["Container<br/>:8080"]
+            end
+
+            Service["Service<br/>IP: 10.96.0.10<br/>Port: 80"]
+
+            Pod1 --> Service
+            Pod2 --> Service
+        end
+    end
+
+    Service --> External["External Traffic"]
 ```
 
 ## Common Network Troubleshooting Commands

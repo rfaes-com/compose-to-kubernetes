@@ -25,19 +25,20 @@ A **Pod** is the smallest deployable unit in Kubernetes. It represents a single 
 
 ### Pod vs Container
 
-```text
-┌─────────────────────────────────────┐
-│           Pod                       │
-│  IP: 10.244.0.5                     │
-│                                     │
-│  ┌──────────────┐  ┌────────────┐   │
-│  │  Container 1 │  │Container 2 │   │
-│  │   (nginx)    │  │  (sidecar) │   │
-│  │  Port: 80    │  │ Port: 9090 │   │
-│  └──────────────┘  └────────────┘   │
-│                                     │
-│  Shared: Network, IPC, Volumes      │
-└─────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Pod["Pod<br/>IP: 10.244.0.5"]
+        direction TB
+
+        subgraph Containers[" "]
+            direction LR
+
+            C1["Container 1<br/>(nginx)<br/>Port: 80"]
+            C2["Container 2<br/>(sidecar)<br/>Port: 9090"]
+        end
+
+        Shared["Shared: Network, IPC, Volumes"]
+    end
 ```
 
 ## Pod Lifecycle
@@ -172,7 +173,7 @@ spec:
 - Containers share volumes (both can read/write logs)
 - Containers share Pod lifecycle (die together)
 
-## 🔌 Container Ports
+## Container Ports
 
 ### Declaring Ports
 
@@ -479,7 +480,7 @@ Pods are great, but they're missing self-healing and scaling. Let's fix that!
 4. How do you view logs from a specific container in a multi-container Pod?
 5. Why shouldn't you use Pods directly in production?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **A Pod can contain one or more containers; it's the unit of deployment in Kubernetes**

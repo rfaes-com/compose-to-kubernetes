@@ -77,7 +77,7 @@ kubectl delete pod --all
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1.3: Getting Pod IP</summary>
 
 Use the `-o wide` flag:
@@ -94,7 +94,7 @@ kubectl get pod redis-test -o jsonpath='{.status.podIP}'
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2.1: YAML structure</summary>
 
 Basic Pod structure:
@@ -116,7 +116,7 @@ spec:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2.4: Adding labels</summary>
 
 Use the `label` command:
@@ -127,7 +127,7 @@ kubectl label pod <pod-name> <key>=<value>
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3.3: Checking container logs</summary>
 
 For multi-container Pods, specify the container:
@@ -138,7 +138,7 @@ kubectl logs <pod-name> -c <container-name>
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4.2: Filtering by label</summary>
 
 Use the `-l` or `--selector` flag:

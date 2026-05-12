@@ -94,54 +94,93 @@ Where your applications actually run. Components:
 
 ### Architecture Diagram
 
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│                         CONTROL PLANE                           │
-│  ┌──────────────┐  ┌─────────┐  ┌───────────┐  ┌──────────┐     │
-│  │  API Server  │  │  etcd   │  │ Scheduler │  │Controller│     │
-│  │              │  │ (Store) │  │           │  │ Manager  │     │
-│  └──────────────┘  └─────────┘  └───────────┘  └──────────┘     │
-│                           │                                     │
-│                    ┌──────▼──────┐                              │
-│                    │   kubectl   │ (You use this)               │
-│                    └──────┬──────┘                              │
-└───────────────────────────┼─────────────────────────────────────┘
-                            │
-          ┌─────────────────┴───┬─────────────────────┐
-          │                     │                     │
-┌─────────▼─────────┐ ┌─────────▼─────────┐ ┌─────────▼─────────┐
-│   WORKER NODE 1   │ │   WORKER NODE 2   │ │   WORKER NODE 3   │
-│ ┌───────────────┐ │ │ ┌───────────────┐ │ │ ┌───────────────┐ │
-│ │   Kubelet     │ │ │ │   Kubelet     │ │ │ │   Kubelet     │ │
-│ │ kube-proxy    │ │ │ │ kube-proxy    │ │ │ │ kube-proxy    │ │
-│ │Runtime(Podman)│ │ │ │Runtime(Podman)│ │ │ │Runtime(Podman)│ │
-│ └───────────────┘ │ │ └───────────────┘ │ │ └───────────────┘ │
-│  ┌─────┐ ┌─────┐  │ │  ┌─────┐ ┌─────┐  │ │  ┌─────┐ ┌─────┐  │
-│  │ Pod │ │ Pod │  │ │  │ Pod │ │ Pod │  │ │  │ Pod │ │ Pod │  │
-│  └─────┘ └─────┘  │ │  └─────┘ └─────┘  │ │  └─────┘ └─────┘  │
-└───────────────────┘ └───────────────────┘ └───────────────────┘
+```mermaid
+flowchart TB
+    %% Control Plane
+    subgraph CP["CONTROL PLANE"]
+        direction TB
+
+        subgraph CPC[" "]
+            direction LR
+
+            APIServer["API Server"]
+            ETCD["etcd<br/>(Store)"]
+            Scheduler["Scheduler"]
+            Controller["Controller Manager"]
+        end
+
+        Kubectl["kubectl<br/>(You use this)"]
+
+        APIServer --> Kubectl
+        ETCD --> Kubectl
+        Scheduler --> Kubectl
+        Controller --> Kubectl
+    end
+
+    %% Worker Nodes
+    Kubectl --> W1
+    Kubectl --> W2
+    Kubectl --> W3
+
+    subgraph W1["WORKER NODE 1"]
+        direction TB
+
+        W1Services["Kubelet<br/>kube-proxy<br/>Runtime (Podman)"]
+
+        subgraph W1Pods[" "]
+            direction LR
+            W1Pod1["Pod"]
+            W1Pod2["Pod"]
+        end
+    end
+
+    subgraph W2["WORKER NODE 2"]
+        direction TB
+
+        W2Services["Kubelet<br/>kube-proxy<br/>Runtime (Podman)"]
+
+        subgraph W2Pods[" "]
+            direction LR
+            W2Pod1["Pod"]
+            W2Pod2["Pod"]
+        end
+    end
+
+    subgraph W3["WORKER NODE 3"]
+        direction TB
+
+        W3Services["Kubelet<br/>kube-proxy<br/>Runtime (Podman)"]
+
+        subgraph W3Pods[" "]
+            direction LR
+            W3Pod1["Pod"]
+            W3Pod2["Pod"]
+        end
+    end
+
+    W1Services --> W1Pods
+    W2Services --> W2Pods
+    W3Services --> W3Pods
 ```
 
 ## Single-Node vs Multi-Node Clusters
 
 ### Single-Node Setup
 
-```text
-┌────────────────────────────────┐
-│     Single Node (Container)    │
-│                                │
-│  ┌─────────────────────┐       │
-│  │ Control Plane       │       │
-│  │ (API, etcd, etc.)   │       │
-│  └─────────────────────┘       │
-│                                │
-│  ┌─────────────────────┐       │
-│  │ Worker Components   │       │
-│  │ (kubelet, runtime)  │       │
-│  └─────────────────────┘       │
-│                                │
-│        Your Pods Here          │
-└────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph SN["Single Node (Container)"]
+        direction TB
+
+        CP["Control Plane<br/>(API, etcd, etc.)"]
+
+        WC["Worker Components<br/>(kubelet, runtime)"]
+
+        Pods["Your Pods Here"]
+
+        CP --> WC
+        WC --> Pods
+    end
 ```
 
 **Good for:**
@@ -158,16 +197,28 @@ Where your applications actually run. Components:
 
 ### Multi-Node Setup
 
-```text
-┌────────────┐  ┌────────────┐  ┌────────────┐
-│ Control    │  │  Worker    │  │  Worker    │
-│  Plane     │  │   Node 1   │  │   Node 2   │
-│   Node     │  │            │  │            │
-│            │  │  ┌─────┐   │  │  ┌─────┐   │
-│ No Pods    │  │  │ Pod │   │  │  │ Pod │   │
-│  Run Here  │  │  └─────┘   │  │  └─────┘   │
-│  (Usually) │  │            │  │            │
-└────────────┘  └────────────┘  └────────────┘
+```mermaid
+flowchart LR
+    subgraph CP["Control Plane Node"]
+        direction TB
+
+        CPText["No Pods Run Here<br/>(Usually)"]
+    end
+
+    subgraph W1["Worker Node 1"]
+        direction TB
+
+        W1Pod["Pod"]
+    end
+
+    subgraph W2["Worker Node 2"]
+        direction TB
+
+        W2Pod["Pod"]
+    end
+
+    CP --> W1
+    CP --> W2
 ```
 
 **Good for:**
@@ -386,7 +437,7 @@ Before moving on, make sure you can answer:
 4. What does "declarative" mean in the Kubernetes context?
 5. When would you choose Kubernetes over Docker Compose?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **API Server, etcd, Scheduler, Controller Manager**

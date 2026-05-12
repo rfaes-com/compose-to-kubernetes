@@ -118,7 +118,7 @@ Create a PrometheusRule that fires when Prometheus cannot find a podinfo target.
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 1: Installing kube-prometheus-stack</summary>
 
 Add the chart repository and create the namespace:
@@ -148,7 +148,7 @@ kubectl get pods -n monitoring
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2: Exposing podinfo and metrics</summary>
 
 Create the namespace first:
@@ -192,7 +192,7 @@ curl http://localhost:9797/metrics | head
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: Creating the ServiceMonitor</summary>
 
 A ServiceMonitor selects a Service by labels and scrapes a named Service port:
@@ -221,7 +221,7 @@ Open <http://localhost:9090/targets> and find the `observability-lab/podinfo` ta
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 4: Querying podinfo metrics</summary>
 
 Start with the scrape health:
@@ -251,7 +251,7 @@ for i in $(seq 1 5); do curl -s http://localhost:9898/not-found > /dev/null; don
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 5: Opening Grafana</summary>
 
 Decode the Grafana password:
@@ -281,7 +281,7 @@ sum(rate(http_requests_total{namespace="observability-lab"}[1m])) by (status)
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 6: Installing Loki and querying logs</summary>
 
 Install Loki and Promtail without installing a second Grafana:
@@ -327,7 +327,7 @@ Try these LogQL queries:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 7: Alerting when the target disappears</summary>
 
 The expression can use `absent()`:

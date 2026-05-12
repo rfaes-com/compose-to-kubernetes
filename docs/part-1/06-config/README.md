@@ -430,7 +430,7 @@ Now we can configure applications. Let's add persistent storage!
 4. What happens when you update a ConfigMap used by running Pods?
 5. How can you make a Secret immutable?
 
-<details>
+<details markdown="1">
 <summary>Click for answers</summary>
 
 1. **ConfigMap: non-sensitive config (settings, feature flags). Secret: sensitive data (passwords, API keys)**

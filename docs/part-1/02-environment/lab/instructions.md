@@ -102,7 +102,7 @@ kubectl config current-context
 
 ## Hints
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2.1: Creating a Pod with a command</summary>
 
 Use `kubectl run` with the `--command` flag or `--` to specify the command:
@@ -115,7 +115,7 @@ For sleep, the command is `sleep` and the arg is `3600`.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2.4: Executing a command in a Pod</summary>
 
 Use `kubectl exec`:
@@ -128,7 +128,7 @@ For echo, the full command is `echo "Hello from inside the Pod!"` but you may ne
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 2.6: Interactive shell</summary>
 
 Use `kubectl exec` with `-it` flags:
@@ -141,7 +141,7 @@ Note: busybox uses `/bin/sh`, not `/bin/bash`.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Hint for Task 3: k9s namespace filtering</summary>
 
 In k9s, you can filter by namespace by typing `/` followed by search text, or use `0-9` keys to select namespace, or type `:` followed by resource type and namespace like `:pods default`.
