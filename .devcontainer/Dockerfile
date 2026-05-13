@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     gnupg \
     lsb-release \
+    erofs-utils \
+    fuse-overlayfs \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js (required for npm-based tool installs below)
