@@ -1,6 +1,6 @@
-# Persistent Storage
+# Storage
 
-**Duration:** 40 minutes
+**Duration:** 50 minutes (20 minutes theory + 30 minutes lab)
 
 ## Learning Objectives
 
@@ -480,17 +480,11 @@ spec:
 - Compose: Bind mounts for local files
 - K8s: ConfigMaps/Secrets for configuration
 
-## Lab Exercise
+## Examples
 
-See [Lab: Persistent Storage](lab/instructions.md) for hands-on practice with:
+Check [examples/](examples/index.md) for sample manifests.
 
-- Creating and using emptyDir volumes
-- Creating PVCs and mounting in Pods
-- Using dynamic provisioning with StorageClasses
-- Verifying data persistence across Pod restarts
-- Working with StatefulSets
-
-## Key Takeaways
+## Key takeaways
 
 - Kubernetes separates storage provisioning (PV) from consumption (PVC)
 - emptyDir is ephemeral, PVC provides persistence
@@ -499,15 +493,31 @@ See [Lab: Persistent Storage](lab/instructions.md) for hands-on practice with:
 - StatefulSets provide per-Pod persistent storage
 - Choose storage solutions based on workload requirements
 
-## Check Your Understanding
+## Check your understanding
 
 1. What is the difference between a Volume and a PersistentVolume?
-2. When would you use emptyDir vs PVC?
-3. What does the ReadWriteOnce access mode mean?
+2. What is the difference between emptyDir and a PersistentVolumeClaim?
+3. What does ReadWriteOnce (RWO) mean?
 4. How does a StorageClass enable dynamic provisioning?
-5. Why use StatefulSet instead of Deployment for databases?
-6. What happens to data in PVC when the Pod is deleted?
+5. What happens to a PVC when the Pod using it is deleted?
+6. Which Kubernetes workload type is most suitable for stateful applications like databases?
 
-## Next Steps
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
-Continue to [Resource Quotas and Namespaces](../08-namespaces/README.md) to learn about multi-tenancy and resource isolation.
+1. **A Volume is tied to a Pod's lifecycle; a PersistentVolume is a cluster-level resource that exists independently of any Pod**
+2. **emptyDir is deleted when the Pod is terminated; PVC persists independently of Pod lifecycle**
+3. **The volume can be mounted read-write by a single node at a time**
+4. **StorageClasses define a provisioner and its parameters; when a PVC references a StorageClass, the provisioner automatically creates a matching PersistentVolume**
+5. **The PVC remains intact (and still Bound); only explicitly deleting the PVC removes the data**
+6. **StatefulSet — provides stable network identity and per-Pod PVCs**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../08-namespaces/README.md)

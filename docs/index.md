@@ -21,12 +21,12 @@ practical path to understanding Kubernetes fundamentals and advanced operations.
 ## Workshop Content
 
 - [Part 1: Kubernetes Fundamentals](part-1/README.md) — Pods, Deployments, Services, ConfigMaps, Secrets, Storage, Namespaces, and a final 3-tier application lab
-- [Part 2: Advanced Operations](part-2/README.md) — Ingress, Helm, GitOps with Flux, Monitoring, Advanced Deployment Strategies, Autoscaling, Security, and Multi-Cluster
+- [Part 2: Advanced Topics](part-2/README.md) — Ingress, Helm, GitOps with Flux, Monitoring, Advanced Deployment Strategies, Autoscaling, Security, and Multi-Cluster
 
 ## What's Included
 
 - Complete workshop materials with theory, examples, and hands-on labs
-- Presentation slides for [Part 1](part-1/slides.md) and [Part 2](part-2/slides.md)
+- Presentation slides for [Part 1 and Part 2](./slides)
 - Workshop environment with all tools pre-installed (kubectl, kind, k9s, Helm, Flux)
 - Kind cluster configurations (simple, multi-node, HA)
 - Lab exercises with step-by-step solutions

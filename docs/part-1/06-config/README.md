@@ -1,7 +1,6 @@
 # Configuration Management: ConfigMaps & Secrets
 
-**Duration:** 35 minutes (20 min theory + 15 min lab)
-**Format:** Presentation + Hands-on Lab
+**Duration:** 35 minutes (20 minutes theory + 15 minutes lab)
 
 ## Learning Objectives
 
@@ -197,7 +196,7 @@ stringData:              # Plain text, Kubernetes encodes it
 
 ### Using Secrets in Pods
 
-#### As Environment Variables
+#### Secrets as Environment Variables
 
 ```yaml
 apiVersion: v1
@@ -221,7 +220,7 @@ spec:
               key: password
 ```
 
-#### As Volume Mounts
+#### Secrets as Volume Mounts
 
 ```yaml
 apiVersion: v1
@@ -396,19 +395,11 @@ Once created, cannot be modified. Must delete and recreate.
 6. **Enable encryption at rest** for Secrets in production
 7. **Use stringData for readability** when creating Secrets manually
 
-## Lab: ConfigMaps and Secrets
-
-**Time:** 15 minutes
-
-Practice creating and using ConfigMaps and Secrets.
-
-See [lab/instructions.md](lab/instructions.md)
-
 ## Examples
 
-Check [examples/](examples/) for sample manifests.
+Check [examples/](examples/index.md) for sample manifests.
 
-## Key Takeaways
+## Key takeaways
 
 - **ConfigMaps** for non-sensitive configuration
 - **Secrets** for sensitive data (passwords, keys)
@@ -416,13 +407,7 @@ Check [examples/](examples/) for sample manifests.
 - **Updates don't auto-reload** - restart Pods or use volumes
 - **Never commit Secrets to version control**
 
-## Next Section
-
-Now we can configure applications. Let's add persistent storage!
-
-**Next:** [07-storage - Storage in Kubernetes](../07-storage/README.md)
-
-## Check Your Understanding
+## Check your understanding
 
 1. When would you use a ConfigMap vs a Secret?
 2. How do you use a ConfigMap as environment variables in a Pod?
@@ -430,13 +415,21 @@ Now we can configure applications. Let's add persistent storage!
 4. What happens when you update a ConfigMap used by running Pods?
 5. How can you make a Secret immutable?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **ConfigMap: non-sensitive config (settings, feature flags). Secret: sensitive data (passwords, API keys)**
 2. **Use `envFrom` with `configMapRef` or `env` with `valueFrom.configMapKeyRef`**
-3. **No, only base64 encoded Enable encryption at rest for production**
+3. **No, only base64 encoded. Enable encryption at rest for production**
 4. **Running Pods won't pick up changes unless restarted (volumes update with delay)**
 5. **Set `immutable: true` in the Secret manifest**
 
 </details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../07-storage/README.md)

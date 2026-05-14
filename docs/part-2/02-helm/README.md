@@ -1,6 +1,6 @@
 # Helm - The Package Manager for Kubernetes
 
-Duration: 50 minutes (25 min theory + 25 min lab)
+Duration: 50 minutes (25 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -76,13 +76,13 @@ flowchart TB
 
 ## Installing Helm
 
-### Workshop Container (already installed):
+### Workshop Container (already installed)
 
 ```bash
 helm version
 ```
 
-### Manual Installation:
+### Manual Installation
 
 ```bash
 # Linux
@@ -340,7 +340,7 @@ metadata:
 
 ## Creating a Chart
 
-### Using `helm create`:
+### Using `helm create`
 
 ```bash
 # Generate chart scaffold
@@ -357,7 +357,7 @@ myapp/
 │   └── ...
 ```
 
-### Directory Structure:
+### Directory Structure
 
 ```bash
 # Navigate to your chart
@@ -372,13 +372,13 @@ vi templates/deployment.yaml
 
 ## Installing a Chart
 
-### From local directory:
+### From local directory
 
 ```bash
 helm install myrelease ./myapp
 ```
 
-### With custom values:
+### With custom values
 
 ```bash
 # Using --set flag
@@ -391,13 +391,13 @@ helm install myrelease ./myapp \
   -f custom-values.yaml
 ```
 
-### Dry run (preview):
+### Dry run (preview)
 
 ```bash
 helm install myrelease ./myapp --dry-run --debug
 ```
 
-### Different namespace:
+### Different namespace
 
 ```bash
 helm install myrelease ./myapp --namespace production --create-namespace
@@ -455,7 +455,7 @@ helm rollback myrelease 2
 
 ## Chart Repositories
 
-### Adding repositories:
+### Adding repositories
 
 ```bash
 # Add Bitnami repo
@@ -477,7 +477,7 @@ helm repo list
 helm install my-nginx bitnami/nginx
 ```
 
-### ArtifactHub:
+### ArtifactHub
 
 Browse public charts at [artifacthub.io](https://artifacthub.io/)
 
@@ -508,13 +508,13 @@ This downloads charts to `charts/` directory.
 
 ## Testing Charts
 
-### Lint (validate):
+### Lint (validate)
 
 ```bash
 helm lint ./myapp
 ```
 
-### Test (from templates/tests/):
+### Test (from templates/tests/)
 
 ```yaml
 # templates/tests/test-connection.yaml
@@ -541,7 +541,7 @@ helm test myrelease
 
 ## Packaging and Distributing
 
-### Package chart:
+### Package chart
 
 ```bash
 helm package ./myapp
@@ -549,13 +549,13 @@ helm package ./myapp
 # Creates: myapp-1.0.0.tgz
 ```
 
-### Install from package:
+### Install from package
 
 ```bash
 helm install myrelease myapp-1.0.0.tgz
 ```
 
-### Create repository index:
+### Create repository index
 
 ```bash
 helm repo index ./charts --url https://example.com/charts
@@ -563,7 +563,7 @@ helm repo index ./charts --url https://example.com/charts
 
 ## Helm vs Raw Manifests
 
-### Raw Manifests (kubectl):
+### Raw Manifests (kubectl)
 
 ```bash
 # Directory structure
@@ -583,7 +583,7 @@ kubectl apply -f myapp/deployment.yaml
 # No versioning or rollback
 ```
 
-### Helm Charts:
+### Helm Charts
 
 ```bash
 # Chart structure with templates
@@ -621,7 +621,7 @@ helm rollback prod
 
 ## Common Patterns
 
-### Required Values:
+### Required Values
 
 ```yaml
 {{- if not .Values.database.host }}
@@ -632,7 +632,7 @@ helm rollback prod
 host: {{ required "database.host is required" .Values.database.host }}
 ```
 
-### Conditional Resources:
+### Conditional Resources
 
 ```yaml
 # Only create Ingress if enabled
@@ -643,7 +643,7 @@ kind: Ingress
 {{- end }}
 ```
 
-### Image Pull Secrets:
+### Image Pull Secrets
 
 ```yaml
 {{- if .Values.imagePullSecrets }}
@@ -654,7 +654,7 @@ imagePullSecrets:
 {{- end }}
 ```
 
-### Environment Variables from ConfigMap:
+### Environment Variables from ConfigMap
 
 ```yaml
 env:
@@ -713,15 +713,42 @@ Hook types:
 - `pre-delete`, `post-delete`
 - `pre-rollback`, `post-rollback`
 
-## Next Steps
+## Key takeaways
 
-- Complete the hands-on lab in `lab/instructions.md`
-- Explore public charts on ArtifactHub
-- Create charts for your own applications
-- Learn about Helmfile for managing multiple releases
-- Study Chart Museum for private chart repositories
+- **Helm is the package manager for Kubernetes** — it bundles manifests into reusable Charts
+- **Charts use Go templates** to generate Kubernetes manifests from configurable values
+- **Releases are versioned** — you can upgrade, roll back, and inspect history with simple commands
+- **`values.yaml` is the primary customisation point** — override at install or upgrade time
+- **Chart repositories** (ArtifactHub, Bitnami) provide ready-made Charts for common software
 
-## Additional Resources
+## Check your understanding
+
+1. What is the difference between a Chart, a Release, and a Repository in Helm?
+2. How do you override default values when installing a Chart?
+3. What command would you run to roll back a release to the previous version?
+4. What file contains the default configuration for a Chart?
+5. What is the purpose of `_helpers.tpl`?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **A Chart is the package (templates + defaults); a Release is a deployed instance of a Chart; a Repository is a collection of Charts hosted remotely**
+2. **With `--set key=value` flags or by supplying a custom values file with `-f myvalues.yaml`**
+3. **`helm rollback <release-name>` (optionally specify a revision number)**
+4. **`values.yaml` in the Chart's root directory**
+5. **It defines named templates (helper snippets) that can be reused across multiple template files in the Chart**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../03-gitops/README.md).
+
+## Further reading
 
 - [Helm Documentation](https://helm.sh/docs/)
 - [Best Practices Guide](https://helm.sh/docs/chart_best_practices/)

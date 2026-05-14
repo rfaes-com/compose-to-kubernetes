@@ -1,7 +1,6 @@
 # Pods: The Atomic Unit of Kubernetes
 
-**Duration:** 35 minutes (20 min theory + 15 min lab)
-**Format:** Presentation + Hands-on Lab
+**Duration:** 35 minutes (20 minutes theory + 15 minutes lab)
 
 ## Learning Objectives
 
@@ -441,24 +440,16 @@ Pods are ephemeral and have limitations:
 5. **Use liveness/readiness probes** - for production (covered later)
 6. **Don't use `latest` tag** - pin specific versions for reproducibility
 
-## Lab: Working with Pods
-
-**Time:** 15 minutes
-
-Practice creating, inspecting, and managing Pods.
-
-See [lab/instructions.md](lab/instructions.md)
-
 ## Examples
 
-Check the [examples/](examples/) directory for:
+Check the [examples/](examples/index.md) directory for:
 
 - `simple-pod.yaml` - Basic single-container Pod
 - `multi-container-pod.yaml` - Pod with sidecar
 - `pod-with-resources.yaml` - Pod with resource limits
 - `compose.yaml` - Docker Compose comparison
 
-## Key Takeaways
+## Key takeaways
 
 - **Pods are the smallest unit** in Kubernetes
 - **Pods can have multiple containers** that share network and storage
@@ -466,13 +457,7 @@ Check the [examples/](examples/) directory for:
 - **Labels** are used for selection and organization
 - **Use Deployments, not Pods directly**, for production apps
 
-## Next Section
-
-Pods are great, but they're missing self-healing and scaling. Let's fix that!
-
-**Next:** [04-deployments - Deployments & ReplicaSets](../04-deployments/README.md)
-
-## Check Your Understanding
+## Check your understanding
 
 1. What's the difference between a Pod and a container?
 2. Can containers in a Pod communicate via localhost?
@@ -480,8 +465,8 @@ Pods are great, but they're missing self-healing and scaling. Let's fix that!
 4. How do you view logs from a specific container in a multi-container Pod?
 5. Why shouldn't you use Pods directly in production?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **A Pod can contain one or more containers; it's the unit of deployment in Kubernetes**
 2. **Yes, containers in a Pod share the network namespace**
@@ -490,3 +475,11 @@ Pods are great, but they're missing self-healing and scaling. Let's fix that!
 5. **Pods don't have self-healing, scaling, or rolling update capabilities - use Deployments instead**
 
 </details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../04-deployments/README.md)

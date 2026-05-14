@@ -569,7 +569,7 @@ kube-score score manifest.yaml
 | `depends_on:`        | Init containers / readiness | K8s has more sophisticated ordering    |
 | `restart:`           | restartPolicy               | Different in spec                      |
 
-## Key Takeaways
+## Key takeaways
 
 - Organize manifests logically (by component or environment)
 - Use descriptive, consistent naming conventions
@@ -582,7 +582,7 @@ kube-score score manifest.yaml
 - Follow security best practices (non-root, read-only filesystem)
 - Document your manifests with annotations
 
-## Check Your Understanding
+## Check your understanding
 
 1. What's the difference between labels and annotations?
 2. Why should you always specify resource limits?
@@ -590,6 +590,19 @@ kube-score score manifest.yaml
 4. When should you use ConfigMaps vs Secrets?
 5. What are the three types of health probes in Kubernetes?
 
-## Next Steps
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
-Continue to [Final Lab: Complete Application Deployment](../11-final-lab/README.md) to apply everything you've learned.
+1. **Labels are for selection and querying (Deployments find Pods by labels); annotations are for arbitrary non-identifying metadata (documentation, tooling)**
+2. **Without limits a Pod can consume all node resources and starve other workloads**
+3. **The image may change unpredictably between deployments, breaking reproducibility**
+4. **ConfigMaps for non-sensitive config; Secrets for passwords, API keys, and certificates**
+5. **livenessProbe (is the app alive?), readinessProbe (is it ready for traffic?), and startupProbe (is the initial startup complete?)**
+
+</details>
+
+## Next section
+
+Continue to the Final Lab to apply everything you've learned!
+
+**Next:** [11-final-lab - Complete Application Deployment](../11-final-lab/README.md)

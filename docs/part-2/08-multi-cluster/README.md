@@ -1,6 +1,6 @@
 # Multi-Cluster Management
 
-Duration: 45 minutes (20 min theory + 25 min lab)
+Duration: 45 minutes (20 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -537,15 +537,44 @@ Use external data replication:
 | Management        | Simple                  | Complex              |
 | Disaster Recovery | Backup/restore          | Active-active        |
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Set up multiple test clusters
-- Configure context switching
-- Implement backup strategy
-- Practice disaster recovery
+- **Multiple clusters provide stronger isolation** for teams, environments, and regulatory boundaries than namespaces alone
+- **kubectl contexts** allow you to switch between clusters quickly; tools like kubectx make this even easier
+- **GitOps with Flux or Argo CD** is the recommended way to manage deployments across many clusters consistently
+- **Disaster recovery requires a tested backup strategy** — tools like Velero can back up and restore cluster state
+- **Centralised monitoring and logging** across clusters is essential for visibility and incident response
 
-## Additional Resources
+## Check your understanding
+
+1. What kubectl command switches the active cluster context?
+2. What are two reasons you might run separate clusters instead of using namespaces?
+3. Which Velero command initiates a cluster backup?
+4. How does a GitOps approach simplify managing multiple clusters?
+5. What is the trade-off between running workloads in multiple clusters vs. a single cluster with multiple namespaces?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **`kubectl config use-context <context-name>`**
+2. **Stronger security isolation (blast radius containment), compliance/regulatory requirements, separate teams with different release cadences, or geographic distribution**
+3. **`velero backup create <backup-name>`**
+4. **Each cluster has its own Flux installation pointing at the same Git repository; updating a manifest in Git automatically reconciles all clusters without needing direct cluster access**
+5. **Multiple clusters provide stronger isolation and fault boundaries but increase operational complexity and cost; a single cluster with namespaces is simpler to manage but offers weaker isolation**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Congratulations — you've completed Part 2 of the workshop!
+
+**Return to:** [Part 2 Overview](../README.md)
+
+## Further reading
 
 - [Multi-Cluster Services](https://github.com/kubernetes-sigs/mcs-api)
 - [Cilium Cluster Mesh](https://docs.cilium.io/en/stable/network/clustermesh/)

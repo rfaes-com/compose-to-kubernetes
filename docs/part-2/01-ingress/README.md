@@ -1,6 +1,6 @@
-# Ingress Controllers
+# Ingress
 
-Duration: 45 minutes (20 min theory + 25 min lab)
+Duration: 45 minutes (20 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -94,19 +94,19 @@ Kubernetes supports three `pathType` values:
 
 ## Installing NGINX Ingress Controller
 
-### For kind clusters:
+### For kind clusters
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 ```
 
-### For cloud providers:
+### For cloud providers
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
 
-### Verify installation:
+### Verify installation
 
 ```bash
 kubectl get pods -n ingress-nginx
@@ -264,7 +264,7 @@ spec:
               number: 80
 ```
 
-### Generate self-signed certificate for testing:
+### Generate self-signed certificate for testing
 
 ```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -355,27 +355,27 @@ spec:
 
 ## Debugging Ingress
 
-### Check Ingress status:
+### Check Ingress status
 
 ```bash
 kubectl get ingress
 kubectl describe ingress <ingress-name>
 ```
 
-### Check Ingress Controller logs:
+### Check Ingress Controller logs
 
 ```bash
 kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
 ```
 
-### Check backend service and endpoints:
+### Check backend service and endpoints
 
 ```bash
 kubectl get svc
 kubectl get endpoints
 ```
 
-### Test from inside cluster:
+### Test from inside cluster
 
 ```bash
 kubectl run test --image=curlimages/curl:8.5.0 -it --rm -- sh
@@ -385,7 +385,7 @@ curl -H "Host: example.com" http://ingress-nginx-controller.ingress-nginx
 
 ## Ingress vs LoadBalancer Comparison
 
-### Using LoadBalancer Services:
+### Using LoadBalancer Services
 
 ```yaml
 # 3 services = 3 load balancers (expensive!)
@@ -421,7 +421,7 @@ spec:
 **Management:** 3 separate IP addresses
 **Routing:** None (only L4 routing)
 
-### Using Ingress:
+### Using Ingress
 
 ```yaml
 # 3 ClusterIP services + 1 Ingress
@@ -574,14 +574,42 @@ spec:
               number: 80
 ```
 
-## Next Steps
+## Key takeaways
 
-- Complete the hands-on lab in `lab/instructions.md`
-- Explore other Ingress Controllers (Traefik, Contour)
-- Learn about cert-manager for automated TLS certificates
-- Study service mesh alternatives (Istio, Linkerd)
+- **Ingress provides HTTP/HTTPS routing** to multiple services through a single entry point
+- **An Ingress Controller is required** — the Ingress resource is just a configuration object
+- **Path-based and host-based routing** let you direct traffic to different services from one IP
+- **TLS termination** can be handled at the Ingress layer, keeping backend services simple
+- **Annotations** customise Ingress Controller behaviour without changing the core spec
 
-## Additional Resources
+## Check your understanding
+
+1. What is the difference between an Ingress resource and an Ingress Controller?
+2. What `pathType` would you use to match `/api` and `/api/v1/users`?
+3. How does Ingress differ from a LoadBalancer Service?
+4. Where do you configure TLS certificates for Ingress?
+5. What is the purpose of the `ingressClassName` field?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **An Ingress resource defines the routing rules; an Ingress Controller is the component that reads those rules and implements the actual routing**
+2. **`Prefix` — it matches the path and all sub-paths**
+3. **A LoadBalancer Service creates one cloud load balancer per Service; Ingress routes multiple services through a single entry point**
+4. **In the `tls` section of the Ingress spec, referencing a Secret that contains the certificate and key**
+5. **It specifies which Ingress Controller should handle the resource, allowing multiple controllers to coexist in the same cluster**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../02-helm/README.md).
+
+## Further reading
 
 - [NGINX Ingress Controller Documentation](https://kubernetes.github.io/ingress-nginx/)
 - [Kubernetes Ingress Documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/)

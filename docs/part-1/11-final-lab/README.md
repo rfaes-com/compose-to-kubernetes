@@ -1,4 +1,4 @@
-# Final Lab: Complete Application Deployment
+# Final Lab
 
 **Duration:** 45-60 minutes
 
@@ -717,7 +717,7 @@ kubectl get all -n myapp
 You've successfully completed this lab when:
 
 - [ ] All pods are running (frontend: 3, backend: 2, database: 1)
-- [ ] Frontend is accessible at http://localhost:30080
+- [ ] Frontend is accessible at `http://localhost:30080`
 - [ ] Backend can connect to database
 - [ ] Data persists in PostgreSQL after pod restart
 - [ ] You can scale deployments up and down

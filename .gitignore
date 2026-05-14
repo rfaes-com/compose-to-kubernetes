@@ -65,3 +65,6 @@ my-*
 
 # locks
 .devcontainer/devcontainer-lock.json
+
+# Generated site
+site/

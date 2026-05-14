@@ -416,8 +416,6 @@ spec:
 - [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
 - [Understanding CNI](https://www.cni.dev/)
 
----
-
 **Pro Tip:** When debugging networking issues in Kubernetes, start with DNS:
 
 ```bash

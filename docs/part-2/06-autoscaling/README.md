@@ -1,6 +1,6 @@
 # Autoscaling
 
-Duration: 45 minutes (20 min theory + 25 min lab)
+Duration: 45 minutes (20 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -516,15 +516,42 @@ behavior:
     selectPolicy: Max  # Use policy that scales fastest
 ```
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Configure HPA for your applications
-- Experiment with custom metrics
-- Try KEDA for event-driven scaling
-- Set up PodDisruptionBudgets
+- **HPA scales the number of Pod replicas** based on CPU, memory, or custom metrics automatically
+- **VPA adjusts resource requests and limits** for individual Pods, optimising resource usage without changing replica count
+- **Cluster Autoscaler adds or removes nodes** when Pods cannot be scheduled or nodes are underutilised
+- **KEDA enables event-driven autoscaling** from external sources like queues, databases, and HTTP traffic
+- **PodDisruptionBudgets protect availability** during scaling events by limiting the number of Pods that can be removed simultaneously
 
-## Additional Resources
+## Check your understanding
+
+1. What is the difference between HPA and VPA?
+2. What metrics does HPA use by default, and how can you extend it?
+3. At what point does the Cluster Autoscaler add a new node?
+4. What Kubernetes resource prevents too many Pods of a deployment from being evicted at once?
+5. Why might you use KEDA instead of the standard HPA?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **HPA scales the number of replicas horizontally; VPA adjusts the CPU/memory resource requests of existing Pods vertically**
+2. **CPU utilisation and memory utilisation by default; you can extend it with custom metrics via the Custom Metrics API or with KEDA**
+3. **When a Pod cannot be scheduled because no existing node has sufficient available resources**
+4. **PodDisruptionBudget (PDB)**
+5. **KEDA supports scaling to zero and reacting to external event sources (e.g. queue depth, database rows) that the standard HPA cannot natively handle**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../07-security/README.md).
+
+## Further reading
 
 - [HPA Documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
 - [VPA Documentation](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)

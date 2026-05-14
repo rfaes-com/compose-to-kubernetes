@@ -1,6 +1,6 @@
 # Security and RBAC
 
-Duration: 50 minutes (25 min theory + 25 min lab)
+Duration: 50 minutes (25 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -607,15 +607,42 @@ spec:
 - [ ] TLS for all services
 - [ ] Regular security updates
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Implement RBAC for your applications
-- Set up NetworkPolicies
-- Configure Pod Security Standards
-- Enable audit logging
+- **RBAC controls who can do what** — use the principle of least privilege for every ServiceAccount and user
+- **NetworkPolicies restrict Pod-to-Pod traffic** — by default all Pods can communicate; policies add an explicit allow model
+- **Pod Security Standards** (Restricted, Baseline, Privileged) enforce secure container configurations at the namespace level
+- **Secrets should never be stored in plain text** in manifests or environment variables committed to version control
+- **Image security matters** — scan images for vulnerabilities and use specific, trusted tags rather than `latest`
 
-## Additional Resources
+## Check your understanding
+
+1. What three components make up an RBAC binding?
+2. What is the difference between a Role and a ClusterRole?
+3. If no NetworkPolicy selects a Pod, what traffic is allowed?
+4. What Pod Security Standard profile blocks privileged containers and requires a non-root user?
+5. How would you grant a ServiceAccount read-only access to Pods in a single namespace?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **A subject (user, group, or ServiceAccount), a role (Role or ClusterRole), and a binding (RoleBinding or ClusterRoleBinding)**
+2. **A Role is scoped to a single namespace; a ClusterRole applies cluster-wide or can be bound within a namespace via a RoleBinding**
+3. **All traffic is allowed — NetworkPolicies are additive and only restrict traffic for Pods they select**
+4. **`Restricted`**
+5. **Create a Role with `get`, `list`, and `watch` verbs on the `pods` resource, then create a RoleBinding linking that Role to the ServiceAccount**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../08-multi-cluster/README.md).
+
+## Further reading
 
 - [RBAC Documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 - [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)

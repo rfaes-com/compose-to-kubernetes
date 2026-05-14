@@ -1,7 +1,6 @@
 # Deployments & ReplicaSets
 
-**Duration:** 40 minutes (20 min theory + 20 min lab)
-**Format:** Presentation + Hands-on Lab
+**Duration:** 40 minutes (20 minutes theory + 20 minutes lab)
 
 ## Learning Objectives
 
@@ -456,23 +455,15 @@ kubectl describe nodes
 # - Scale down or add nodes
 ```
 
-## Lab: Working with Deployments
-
-**Time:** 20 minutes
-
-Practice creating, scaling, updating, and rolling back Deployments.
-
-See [lab/instructions.md](lab/instructions.md)
-
 ## Examples
 
-Check the [examples/](examples/) directory for:
+Check the [examples/](examples/index.md) directory for:
 
 - `simple-deployment.yaml` - Basic Deployment
 - `deployment-with-strategy.yaml` - Custom update strategy
 - `compose.yaml` - Docker Compose comparison
 
-## Key Takeaways
+## Key takeaways
 
 - **Deployments manage ReplicaSets, ReplicaSets manage Pods**
 - **Self-healing:** Failed Pods are automatically replaced
@@ -481,13 +472,7 @@ Check the [examples/](examples/) directory for:
 - **Rollback:** Easy revert to previous versions
 - **Always use Deployments** for production stateless apps
 
-## Next Section
-
-Now that we can deploy and scale applications, we need a way for them to communicate.
-
-**Next:** [05-services - Services & Networking](../05-services/README.md)
-
-## Check Your Understanding
+## Check your understanding
 
 1. What's the relationship between Deployment, ReplicaSet, and Pod?
 2. What happens if you manually delete a Pod managed by a Deployment?
@@ -495,8 +480,8 @@ Now that we can deploy and scale applications, we need a way for them to communi
 4. What's the difference between `maxSurge` and `maxUnavailable`?
 5. How do you rollback a failed deployment?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **Deployment manages ReplicaSets, ReplicaSets manage Pods. Deployment provides declarative updates and rollback.**
 2. **The ReplicaSet immediately creates a new Pod to maintain the desired replica count.**
@@ -505,3 +490,11 @@ Now that we can deploy and scale applications, we need a way for them to communi
 5. **`kubectl rollout undo deployment/<name>`**
 
 </details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../05-services/README.md)

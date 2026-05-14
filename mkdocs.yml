@@ -12,6 +12,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.indexes
     - navigation.sections
     - navigation.expand
     - navigation.path
@@ -34,6 +35,9 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
 
 plugins:
   - search
@@ -71,80 +75,67 @@ extra:
 
 nav:
   - Home: index.md
-  - Part 1 - Core Concepts:
-    - Overview: part-1/README.md
-    - "1. Introduction": part-1/01-intro/README.md
-    - "2. Environment Setup":
-      - Overview: part-1/02-environment/README.md
-      - Lab: part-1/02-environment/lab/instructions.md
-      - Solution: part-1/02-environment/lab/solutions/lab-solution.md
-    - "3. Pods":
-      - Overview: part-1/03-pods/README.md
-      - Lab: part-1/03-pods/lab/instructions.md
-      - Solution: part-1/03-pods/lab/solutions/lab-solution.md
-    - "4. Deployments":
-      - Overview: part-1/04-deployments/README.md
-      - Lab: part-1/04-deployments/lab/instructions.md
-      - Solution: part-1/04-deployments/lab/solutions/lab-solution.md
-    - "5. Services":
-      - Overview: part-1/05-services/README.md
-      - Lab: part-1/05-services/lab/instructions.md
-      - Solution: part-1/05-services/lab/solutions/lab-solution.md
-    - "6. Configuration":
-      - Overview: part-1/06-config/README.md
-      - Lab: part-1/06-config/lab/instructions.md
-      - Solution: part-1/06-config/lab/solutions/lab-solution.md
+  - "Part 1: Kubernetes Fundamentals":
+    - part-1/README.md
+    - "1. Introduction to Kubernetes":
+      - part-1/01-intro/README.md
+    - "2. Environment Setup & First Steps":
+      - part-1/02-environment/README.md
+      - 2.1 Lab: part-1/02-environment/lab.md
+    - "3. Pods: The Atomic Unit of Kubernetes":
+      - part-1/03-pods/README.md
+      - 3.1 Lab: part-1/03-pods/lab.md
+    - "4. Deployments & ReplicaSets":
+      - part-1/04-deployments/README.md
+      - 4.1 Lab: part-1/04-deployments/lab.md
+    - "5. Services & Networking":
+      - part-1/05-services/README.md
+      - 5.1 Lab: part-1/05-services/lab.md
+    - "6. Configuration Management: ConfigMaps & Secrets":
+      - part-1/06-config/README.md
+      - 6.1 Lab: part-1/06-config/lab.md
     - "7. Storage":
-      - Overview: part-1/07-storage/README.md
-      - Lab: part-1/07-storage/lab/instructions.md
-      - Solution: part-1/07-storage/lab/solutions/lab-solution.md
-    - "8. Namespaces":
-      - Overview: part-1/08-namespaces/README.md
-      - Lab: part-1/08-namespaces/lab/instructions.md
-      - Solution: part-1/08-namespaces/lab/solutions/lab-solution.md
-    - "9. Tools":
-      - Overview: part-1/09-tools/README.md
-      - Lab: part-1/09-tools/lab/instructions.md
-    - "10. Manifests": part-1/10-manifests/README.md
+      - part-1/07-storage/README.md
+      - 7.1 Lab: part-1/07-storage/lab.md
+    - "8. Namespaces and Resource Quotas":
+      - part-1/08-namespaces/README.md
+      - 8.1 Lab: part-1/08-namespaces/lab.md
+    - "9. kubectl and k9s essentials":
+      - part-1/09-tools/README.md
+      - 9.1 Lab: part-1/09-tools/lab.md
+    - "10. Manifests":
+      - part-1/10-manifests/README.md
     - "11. Final Lab":
-      - Overview: part-1/11-final-lab/README.md
-      - Solution: part-1/11-final-lab/solution/README.md
-  - Part 2 - Advanced Topics:
-    - Overview: part-2/README.md
+      - part-1/11-final-lab/README.md
+      - 11.1 Solution: part-1/11-final-lab/solution/README.md
+  - "Part 2: Advanced Topics":
+    - part-2/README.md
     - "1. Ingress":
-      - Overview: part-2/01-ingress/README.md
-      - Lab: part-2/01-ingress/lab/instructions.md
-      - Solution: part-2/01-ingress/lab/solutions/lab-solution.md
-    - "2. Helm":
-      - Overview: part-2/02-helm/README.md
-      - Example Chart: part-2/02-helm/examples/simple-chart/README.md
-      - Lab: part-2/02-helm/lab/instructions.md
-      - Solution: part-2/02-helm/lab/solutions/lab-solution.md
-    - "3. GitOps":
-      - Overview: part-2/03-gitops/README.md
-      - Example Repository: part-2/03-gitops/examples/README.md
-      - Lab: part-2/03-gitops/lab/instructions.md
-      - Solution: part-2/03-gitops/lab/solutions/lab-solution.md
-    - "4. Monitoring":
-      - Overview: part-2/04-monitoring/README.md
-      - Lab: part-2/04-monitoring/lab/instructions.md
-      - Solution: part-2/04-monitoring/lab/solutions/lab-solution.md
-    - "5. Advanced Deployments":
-      - Overview: part-2/05-advanced-deployments/README.md
-      - Lab: part-2/05-advanced-deployments/lab/instructions.md
-      - Solution: part-2/05-advanced-deployments/lab/solutions/lab-solution.md
+      - part-2/01-ingress/README.md
+      - 1.1 Lab: part-2/01-ingress/lab.md
+    - "2. Helm - The Package Manager for Kubernetes":
+      - part-2/02-helm/README.md
+      - 2.1 Lab: part-2/02-helm/lab.md
+      - 2.2 Example Chart: part-2/02-helm/examples/simple-chart/README.md
+    - "3. GitOps with Flux":
+      - part-2/03-gitops/README.md
+      - 3.1 Lab: part-2/03-gitops/lab.md
+      - 3.2 Example Repository: part-2/03-gitops/examples/README.md
+    - "4. Monitoring and Logging":
+      - part-2/04-monitoring/README.md
+      - 4.1 Lab: part-2/04-monitoring/lab.md
+    - "5. Advanced Deployment Strategies":
+      - part-2/05-advanced-deployments/README.md
+      - 5.1 Lab: part-2/05-advanced-deployments/lab.md
     - "6. Autoscaling":
-      - Overview: part-2/06-autoscaling/README.md
-      - Lab: part-2/06-autoscaling/lab/instructions.md
-      - Solution: part-2/06-autoscaling/lab/solutions/lab-solution.md
-    - "7. Security":
-      - Overview: part-2/07-security/README.md
-      - Lab: part-2/07-security/lab/instructions.md
-      - Solution: part-2/07-security/lab/solutions/lab-solution.md
-    - "8. Multi-Cluster":
-      - Overview: part-2/08-multi-cluster/README.md
-      - Lab: part-2/08-multi-cluster/lab/instructions.md
-      - Solution: part-2/08-multi-cluster/lab/solutions/lab-solution.md
+      - part-2/06-autoscaling/README.md
+      - 6.1 Lab: part-2/06-autoscaling/lab.md
+    - "7. Security and RBAC":
+      - part-2/07-security/README.md
+      - 7.1 Lab: part-2/07-security/lab.md
+    - "8. Multi-Cluster Management":
+      - part-2/08-multi-cluster/README.md
+      - 8.1 Lab: part-2/08-multi-cluster/lab.md
   - Resources:
     - Compose to K8s Mapping: resources/compose-to-k8s-mapping.md
     - kubectl Cheatsheet: resources/kubectl-cheatsheet.md

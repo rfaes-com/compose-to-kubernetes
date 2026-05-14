@@ -1,7 +1,6 @@
 # Introduction to Kubernetes
 
 **Duration:** 30 minutes
-**Format:** Presentation + Brief Demo
 
 ## Learning Objectives
 
@@ -415,18 +414,6 @@ kubectl delete service nginx
 kind delete cluster --name workshop
 ```
 
-## Further Reading
-
-- [Official Kubernetes Documentation](https://kubernetes.io/docs/concepts/)
-- [Kubernetes Architecture](https://kubernetes.io/docs/concepts/architecture/)
-- [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/)
-
-## Next Section
-
-Now that you understand the "why" and "what" of Kubernetes, let's get hands-on!
-
- **Next:** [02-environment - Environment Setup & First Steps](../02-environment/README.md)
-
 ## Check Your Understanding
 
 Before moving on, make sure you can answer:
@@ -437,8 +424,8 @@ Before moving on, make sure you can answer:
 4. What does "declarative" mean in the Kubernetes context?
 5. When would you choose Kubernetes over Docker Compose?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **API Server, etcd, Scheduler, Controller Manager**
 2. **Kubelet, Container Runtime, kube-proxy**
@@ -447,3 +434,15 @@ Before moving on, make sure you can answer:
 5. **When you need production scale, HA, multi-host, auto-scaling, or complex orchestration**
 
 </details>
+
+## Next Section
+
+Now that you understand the "why" and "what" of Kubernetes, let's get hands-on!
+
+**Next:** [2. Environment Setup & First Steps](../02-environment/README.md)
+
+## Further Reading
+
+- [Official Kubernetes Documentation](https://kubernetes.io/docs/concepts/)
+- [Kubernetes Architecture](https://kubernetes.io/docs/concepts/architecture/)
+- [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/)

@@ -11,8 +11,6 @@ Practical examples of Kubernetes Role-Based Access Control (RBAC) configurations
 | `RoleBinding`        | Namespace    | Binds a Role or ClusterRole to subjects within a namespace               |
 | `ClusterRoleBinding` | Cluster-wide | Binds a ClusterRole to subjects across the entire cluster                |
 
----
-
 ## Roles
 
 ### Read-Only Role (Namespace)
@@ -87,8 +85,6 @@ rules:
     verbs: ["get", "list", "watch", "create", "update", "patch"]
 ```
 
----
-
 ## ClusterRoles
 
 ### Cluster Read-Only
@@ -154,8 +150,6 @@ rules:
     resources: ["customresourcedefinitions"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ```
-
----
 
 ## RoleBindings
 
@@ -232,8 +226,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
----
-
 ## ClusterRoleBindings
 
 ### Bind a User to Cluster-Wide Read
@@ -270,8 +262,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
----
-
 ## ServiceAccounts
 
 ### Create a ServiceAccount
@@ -301,8 +291,6 @@ spec:
         - name: app
           image: my-app:latest
 ```
-
----
 
 ## Multi-Tenant Namespace Isolation
 
@@ -407,8 +395,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
----
-
 ## Debugging RBAC
 
 ```bash
@@ -434,8 +420,6 @@ kubectl describe rolebinding alice-developer -n my-app
 kubectl get clusterrolebindings
 ```
 
----
-
 ## Built-In ClusterRoles
 
 | ClusterRole                      | Description                                                |
@@ -447,8 +431,6 @@ kubectl get clusterrolebindings
 | `system:node`                    | Used by kubelets                                           |
 | `system:kube-scheduler`          | Used by the scheduler                                      |
 | `system:kube-controller-manager` | Used by controller manager                                 |
-
----
 
 ## Common Verbs
 

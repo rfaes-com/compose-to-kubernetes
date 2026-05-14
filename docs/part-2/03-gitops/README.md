@@ -1,6 +1,6 @@
 # GitOps with Flux
 
-Duration: 50 minutes (25 min theory + 25 min lab)
+Duration: 50 minutes (25 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -358,15 +358,42 @@ sops -e secret.yaml > secret.enc.yaml
 7. **Monitoring detects** issues (if any)
 8. **Automatic rollback** if health checks fail
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Explore Flagger for progressive delivery
-- Set up image automation
-- Implement secret management
-- Configure notifications
+- **GitOps treats Git as the single source of truth** — the cluster state is always derived from a repository
+- **Flux pulls changes from Git** rather than having CI push to the cluster, reducing the attack surface
+- **Continuous reconciliation** automatically corrects any drift between the desired state in Git and the actual cluster state
+- **Secrets must be encrypted before committing** — use Sealed Secrets or SOPS to keep sensitive data safe in Git
+- **Image automation** allows Flux to update manifests automatically when new container images are pushed
 
-## Additional Resources
+## Check your understanding
+
+1. What is the key difference between a push-based and a pull-based deployment model?
+2. Which Flux controller is responsible for applying Kustomize overlays?
+3. How does GitOps help with audit trails?
+4. What is the purpose of the `prune: true` option in a Kustomization?
+5. Why should secrets be encrypted before storing them in a GitOps repository?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **In push-based deployments, a CI system sends changes to the cluster (requiring cluster credentials in CI); in pull-based, an in-cluster agent fetches and applies changes from Git**
+2. **The Kustomize Controller**
+3. **Every change is a Git commit, providing a complete, timestamped history of who changed what and when**
+4. **It tells Flux to delete resources from the cluster that are no longer present in the Git repository**
+5. **Anyone with read access to the repository would be able to see plain-text credentials; encryption ensures secrets are safe even in public repos**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../04-monitoring/README.md).
+
+## Further reading
 
 - [Flux Documentation](https://fluxcd.io/docs/)
 - [GitOps Toolkit](https://toolkit.fluxcd.io/)

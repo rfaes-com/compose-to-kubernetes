@@ -1,7 +1,6 @@
 # Services & Networking
 
-**Duration:** 40 minutes (25 min theory + 15 min lab)
-**Format:** Presentation + Hands-on Lab
+**Duration:** 45 minutes (25 minutes theory + 20 minutes lab)
 
 ## Learning Objectives
 
@@ -477,24 +476,16 @@ kubectl run test --image=busybox -it --rm -- nslookup my-service
 # See setup/kind/simple.yaml for port mapping examples
 ```
 
-## Lab: Working with Services
-
-**Time:** 15 minutes
-
-Practice creating Services and understanding service discovery.
-
-See [lab/instructions.md](lab/instructions.md)
-
 ## Examples
 
-Check the [examples/](examples/) directory for:
+Check the [examples/](examples/index.md) directory for:
 
 - `clusterip-service.yaml` - Internal Service
 - `nodeport-service.yaml` - External access via NodePort
 - `loadbalancer-service.yaml` - Cloud load balancer
 - `compose.yaml` - Docker Compose comparison
 
-## Key Takeaways
+## Key takeaways
 
 - **Services provide stable endpoints** for ephemeral Pods
 - **ClusterIP** (default) for internal, **NodePort** for testing, **LoadBalancer** for production external access
@@ -502,13 +493,7 @@ Check the [examples/](examples/) directory for:
 - **Label selectors** connect Services to Pods
 - **Endpoints** track backing Pod IPs
 
-## Next Section
-
-Now we can deploy and expose applications. Let's configure them!
-
-**Next:** [06-config - Configuration Management](../06-config/README.md)
-
-## Check Your Understanding
+## Check your understanding
 
 1. What problem do Services solve?
 2. What's the difference between ClusterIP, NodePort, and LoadBalancer?
@@ -516,8 +501,8 @@ Now we can deploy and expose applications. Let's configure them!
 4. What happens if a Service's selector doesn't match any Pods?
 5. How can you check which Pods a Service is routing to?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **Services provide stable IP addresses and DNS names for ephemeral Pods with changing IPs**
 2. **ClusterIP: internal only; NodePort: accessible via Node IP:port; LoadBalancer: external cloud load balancer**
@@ -526,3 +511,11 @@ Now we can deploy and expose applications. Let's configure them!
 5. **`kubectl get endpoints <service-name>` or `kubectl describe service <service-name>`**
 
 </details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../06-config/README.md)

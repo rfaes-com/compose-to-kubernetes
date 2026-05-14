@@ -1,6 +1,6 @@
-# kubectl and k9s Essentials
+# kubectl and k9s essentials
 
-**Duration:** 35 minutes
+**Duration:** 65 minutes (35 minutes theory + 30 minutes lab)
 
 ## Learning Objectives
 
@@ -544,25 +544,16 @@ kubectl attach nginx -it
 
 See the [kubectl Cheatsheet](../../resources/kubectl-cheatsheet.md) and [k9s Shortcuts](../../resources/k9s-shortcuts.md) for complete references.
 
-## Lab Exercise
-
-See [Lab: kubectl and k9s Practice](lab/instructions.md) for hands-on exercises covering:
-
-- Essential kubectl commands
-- Debugging techniques
-- Using k9s for cluster management
-- Troubleshooting common issues
-
-## Key Takeaways
+## Key takeaways
 
 - kubectl is your primary interface to Kubernetes
 - `describe` and `logs` are essential for troubleshooting
 - k9s provides a faster, more visual way to manage clusters
 - Labels and selectors make resource management easier
-- contexts let you work with multiple clusters
+- Contexts let you work with multiple clusters
 - Dry-run and explain help understand and validate configurations
 
-## Check Your Understanding
+## Check your understanding
 
 1. What's the difference between `kubectl create` and `kubectl apply`?
 2. How do you view logs from a previous container instance?
@@ -570,6 +561,21 @@ See [Lab: kubectl and k9s Practice](lab/instructions.md) for hands-on exercises 
 4. How do you access a ClusterIP service from your local machine?
 5. What are the advantages of using k9s over kubectl?
 
-## Next Steps
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
-Continue to [Manifest Organization and Best Practices](../10-manifests/README.md) to learn how to structure your Kubernetes configurations.
+1. **`create` fails if the resource already exists; `apply` creates or updates and is idempotent**
+2. **`kubectl logs <pod> --previous`**
+3. **`get` gives a brief overview; `describe` gives full details, conditions, and crucially the Events section for debugging**
+4. **Use `kubectl port-forward service/<name> <local-port>:<service-port>`**
+5. **k9s is faster for browsing resources, real-time log tailing, and navigating multiple resource types without typing commands**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../10-manifests/README.md)

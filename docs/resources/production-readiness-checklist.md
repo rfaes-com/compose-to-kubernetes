@@ -2,8 +2,6 @@
 
 A checklist for reviewing Kubernetes workloads before promoting to production.
 
----
-
 ## Workload Configuration
 
 ### Pods & Containers
@@ -51,8 +49,6 @@ spec:
       app: my-app
 ```
 
----
-
 ## Resource Management
 
 - [ ] **Namespace resource quotas** — Define `ResourceQuota` to cap namespace resource consumption.
@@ -76,8 +72,6 @@ spec:
     pods: "20"
     services: "10"
 ```
-
----
 
 ## Networking
 
@@ -114,8 +108,6 @@ spec:
         - podSelector: {}
 ```
 
----
-
 ## Configuration & Secrets
 
 - [ ] **No secrets in image or source code** — All secrets come from Kubernetes Secrets or an external secrets manager.
@@ -125,8 +117,6 @@ spec:
 - [ ] **External Secrets Operator** — Consider using ESO for syncing secrets from Vault, AWS Secrets Manager, etc.
 - [ ] **Secret rotation plan** — Define how secrets are rotated and how pods pick up the new values.
 
----
-
 ## Storage
 
 - [ ] **Persistent Volume Claims** — Ensure PVCs are bound and using the appropriate StorageClass.
@@ -134,8 +124,6 @@ spec:
 - [ ] **Volume backups** — Enable backups for stateful data (e.g., Velero).
 - [ ] **StatefulSet pod identity** — Verify that StatefulSet pods use stable network identifiers and persistent volumes.
 - [ ] **ReadWriteMany volumes** — Only use `RWX` access modes if your storage backend supports it.
-
----
 
 ## Observability
 
@@ -147,8 +135,6 @@ spec:
 - [ ] **Alerting rules** — Alerts are defined for SLO breaches, error rates, and resource saturation.
 - [ ] **Tracing** — Distributed tracing is configured (e.g., OpenTelemetry, Jaeger) for critical paths.
 - [ ] **Runbooks** — Each alert links to a runbook explaining how to investigate and resolve.
-
----
 
 ## Reliability & Autoscaling
 
@@ -170,8 +156,6 @@ containers:
     terminationMessagePolicy: FallbackToLogsOnError
 ```
 
----
-
 ## Security
 
 - [ ] **RBAC** — Least-privilege roles and service accounts for all components.
@@ -184,8 +168,6 @@ containers:
 - [ ] **etcd encryption** — Sensitive Secret data is encrypted at rest in etcd.
 - [ ] **Node hardening** — Worker nodes have CIS Kubernetes Benchmark controls applied.
 
----
-
 ## CI/CD & Deployment
 
 - [ ] **GitOps / IaC** — All manifests are stored in version control; no manual `kubectl apply`.
@@ -194,8 +176,6 @@ containers:
 - [ ] **Rollback procedure** — Rollback steps are documented and tested.
 - [ ] **Deployment notifications** — Team is notified on successful and failed deployments.
 - [ ] **Change freeze windows** — Deployment schedule respects maintenance windows.
-
----
 
 ## Cluster Operations
 
@@ -206,8 +186,6 @@ containers:
 - [ ] **Namespace hygiene** — Unused namespaces and resources are cleaned up.
 - [ ] **Cost visibility** — Namespace or team cost allocation is visible (e.g., Kubecost).
 - [ ] **Disaster recovery plan** — DR procedure is documented and tested at least annually.
-
----
 
 ## Final Review
 

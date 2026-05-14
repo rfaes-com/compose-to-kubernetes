@@ -71,7 +71,7 @@
                     "MD041": false
                 },
                 // Marp
-                "markdown.marp.enableHtml": true,
+                "markdown.marp.html": "all",
                 "markdown.marp.themes": [],
                 // Editor
                 "editor.formatOnSave": true,

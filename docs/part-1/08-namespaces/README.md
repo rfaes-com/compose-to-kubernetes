@@ -1,6 +1,6 @@
 # Namespaces and Resource Quotas
 
-**Duration:** 30 minutes
+**Duration:** 55 minutes (30 minutes theory + 25 minutes lab)
 
 ## Learning Objectives
 
@@ -394,17 +394,11 @@ Docker Compose doesn't have a direct equivalent to namespaces, but conceptually:
 | Default         | "default" project     | "default" namespace                 |
 | Deletion        | `docker-compose down` | `kubectl delete namespace <name>`   |
 
-## Lab Exercise
+## Examples
 
-See [Lab: Namespaces and Resource Quotas](lab/instructions.md) for hands-on practice with:
+Check [examples/](examples/index.md) for sample manifests.
 
-- Creating multiple namespaces
-- Applying ResourceQuotas
-- Setting LimitRanges
-- Testing quota enforcement
-- Cross-namespace communication
-
-## Key Takeaways
+## Key takeaways
 
 - Namespaces provide logical isolation within a cluster
 - ResourceQuotas limit total resource consumption per namespace
@@ -413,7 +407,7 @@ See [Lab: Namespaces and Resource Quotas](lab/instructions.md) for hands-on prac
 - Deleting a namespace deletes all resources within it
 - Use namespaces for environments, teams, or applications
 
-## Check Your Understanding
+## Check your understanding
 
 1. What is the purpose of Kubernetes namespaces?
 2. What happens when you delete a namespace?
@@ -421,6 +415,21 @@ See [Lab: Namespaces and Resource Quotas](lab/instructions.md) for hands-on prac
 4. How can a Pod in namespace 'frontend' access a Service in namespace 'backend'?
 5. Why must Pods specify resource requests/limits when ResourceQuota is active?
 
-## Next Steps
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
-Continue to [kubectl and k9s Essentials](../09-tools/README.md) to master command-line tools for Kubernetes.
+1. **Namespaces provide logical isolation — grouping resources, applying quotas, and controlling access by team/environment**
+2. **All resources in the namespace are deleted along with it — including Pods, Services, PVCs, etc.**
+3. **ResourceQuota limits the total consumption for a namespace; LimitRange sets defaults and min/max for individual containers**
+4. **Use the FQDN: `http://service-name.backend.svc.cluster.local`**
+5. **If ResourceQuota sets CPU/memory limits for the namespace, every Pod must specify requests/limits so Kubernetes can track usage correctly**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../09-tools/README.md)

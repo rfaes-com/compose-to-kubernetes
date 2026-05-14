@@ -1,4 +1,4 @@
-# Complete Solution - All Manifests
+# Solution
 
 This directory contains the complete Kubernetes manifests for the final lab.
 
@@ -71,8 +71,6 @@ kubectl port-forward -n myapp service/frontend 8080:80
 ```bash
 kubectl delete namespace myapp
 ```
-
----
 
 ## Manifest Files
 

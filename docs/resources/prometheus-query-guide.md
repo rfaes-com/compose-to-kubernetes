@@ -45,8 +45,6 @@ http_requests_total offset 5m
 http_requests_total[5m] offset 1h
 ```
 
----
-
 ## Kubernetes Pod Queries
 
 ### CPU Usage
@@ -98,8 +96,6 @@ increase(kube_pod_container_status_restarts_total[1h]) > 0
 kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}
 ```
 
----
-
 ## Kubernetes Deployment Queries
 
 ```promql
@@ -116,8 +112,6 @@ kube_deployment_status_replicas_updated / kube_deployment_spec_replicas
 # Replica mismatch (desired != available)
 kube_deployment_spec_replicas != kube_deployment_status_replicas_available
 ```
-
----
 
 ## Kubernetes Node Queries
 
@@ -164,8 +158,6 @@ rate(node_network_receive_bytes_total{device!~"lo|veth.*"}[5m])
 # Network transmit rate per node
 rate(node_network_transmit_bytes_total{device!~"lo|veth.*"}[5m])
 ```
-
----
 
 ## HTTP / Application Metrics
 
@@ -225,8 +217,6 @@ histogram_quantile(0.95,
 sum(rate(http_request_duration_seconds_count[5m]))
 ```
 
----
-
 ## SLI / SLO Queries
 
 ```promql
@@ -248,8 +238,6 @@ sum(rate(http_requests_total[1h]))
 (1 - 0.999)
 ```
 
----
-
 ## Kubernetes Resource Quotas
 
 ```promql
@@ -263,8 +251,6 @@ sum(kube_pod_container_resource_requests{resource="memory"}) by (namespace)
   /
 sum(kube_resourcequota{resource="requests.memory", type="hard"}) by (namespace)
 ```
-
----
 
 ## Ingress Metrics (NGINX)
 
@@ -285,8 +271,6 @@ histogram_quantile(0.99,
 # Active connections
 avg(nginx_ingress_controller_nginx_process_connections{state="active"})
 ```
-
----
 
 ## Alerting Rules Examples
 
@@ -337,8 +321,6 @@ groups:
         annotations:
           summary: "Node {{ $labels.node }} is not ready"
 ```
-
----
 
 ## Useful Functions
 

@@ -1,6 +1,6 @@
 # Monitoring and Logging
 
-Duration: 45 minutes (20 min theory + 25 min lab)
+Duration: 45 minutes (20 minutes theory + 25 minutes lab)
 
 ## Introduction
 
@@ -439,15 +439,42 @@ kubectl get --raw /apis/metrics.k8s.io/v1beta1/pods
 - Transaction value
 - Feature usage
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Create custom dashboards in Grafana
-- Set up alert rules
-- Implement distributed tracing
-- Configure log aggregation
+- **Observability has three pillars** — metrics, logs, and traces — each answering different questions about system health
+- **Prometheus scrapes metrics** from targets on a pull-based model; Grafana visualises them
+- **ServiceMonitor** is the Kubernetes-native way to tell Prometheus which services to scrape
+- **PromQL** is a powerful query language for aggregating and alerting on time-series data
+- **Loki provides log aggregation** without indexing full log content, keeping storage costs low
 
-## Additional Resources
+## Check your understanding
+
+1. What are the three pillars of observability?
+2. How does Prometheus collect metrics from applications?
+3. What Kubernetes resource tells Prometheus which Pods to scrape?
+4. What is the difference between a Counter and a Gauge metric type?
+5. What tool would you use to visualise Prometheus metrics in dashboards?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **Metrics, logs, and traces**
+2. **Prometheus uses a pull-based model — it scrapes an HTTP `/metrics` endpoint exposed by each target**
+3. **ServiceMonitor (a Custom Resource Definition provided by the Prometheus Operator)**
+4. **A Counter only ever increases (e.g. total requests); a Gauge can increase or decrease (e.g. current memory usage)**
+5. **Grafana**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../05-advanced-deployments/README.md).
+
+## Further reading
 
 - [Prometheus Documentation](https://prometheus.io/docs/)
 - [Grafana Documentation](https://grafana.com/docs/)

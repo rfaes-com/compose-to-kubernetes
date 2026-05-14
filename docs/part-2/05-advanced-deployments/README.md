@@ -1,6 +1,6 @@
 # Advanced Deployment Strategies
 
-Duration: 40 minutes (20 min theory + 20 min lab)
+Duration: 40 minutes (20 minutes theory + 20 minutes lab)
 
 ## Introduction
 
@@ -491,15 +491,42 @@ kubectl rollout pause deployment/myapp
 kubectl rollout resume deployment/myapp
 ```
 
-## Next Steps
+## Key takeaways
 
-- Complete hands-on lab in `lab/instructions.md`
-- Implement blue/green deployment
-- Try canary with traffic splitting
-- Install Flagger for automated progressive delivery
-- Set up deployment monitoring
+- **Rolling updates** gradually replace old Pods with new ones, providing zero-downtime deployments by default
+- **Blue/green deployments** run two identical environments and switch traffic instantly, making rollbacks instant
+- **Canary deployments** route a small percentage of traffic to the new version before full rollout, reducing blast radius
+- **Flagger automates progressive delivery** by analysing metrics and promoting or rolling back automatically
+- **Proper health checks** (readiness and liveness probes) are essential for any advanced deployment strategy to work correctly
 
-## Additional Resources
+## Check your understanding
+
+1. What is the main difference between a blue/green deployment and a canary deployment?
+2. How does Kubernetes determine whether a rolling update can proceed to the next Pod?
+3. What `kubectl` command pauses a rolling update mid-deployment?
+4. What metric is Flagger typically configured to check before promoting a canary release?
+5. When would you choose a shadow deployment over a canary deployment?
+
+<details class="solution" markdown="1">
+<summary>Solution</summary>
+
+1. **Blue/green switches all traffic at once between two full environments; canary gradually shifts a small percentage of traffic to the new version**
+2. **The new Pod must pass its readiness probe before the old Pod is terminated**
+3. **`kubectl rollout pause deployment/<name>`**
+4. **Error rate (and/or request latency) — Flagger promotes the canary only if the error rate stays below the configured threshold**
+5. **When you want to test the new version with real production traffic without any risk to users — shadow deployments mirror traffic but discard responses from the new version**
+
+</details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../06-autoscaling/README.md).
+
+## Further reading
 
 - [Kubernetes Deployment Strategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 - [Flagger Documentation](https://docs.flagger.app/)

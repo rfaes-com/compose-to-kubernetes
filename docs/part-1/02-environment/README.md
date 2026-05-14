@@ -1,7 +1,6 @@
 # Environment Setup & First Steps
 
-**Duration:** 25 minutes (including 10-minute lab)
-**Format:** Hands-on walkthrough
+**Duration:** 35 minutes (25 minutes theory + 10 minutes lab)
 
 ## Learning Objectives
 
@@ -10,6 +9,39 @@
 - Explore the cluster with k9s
 - Understand kubeconfig and contexts
 - Run your first Pod
+
+## What is kind?
+
+**kind** stands for **Kubernetes IN Docker**. It runs each Kubernetes node as a Docker container on your local machine instead of a full virtual machine or physical server.
+
+### How it works
+
+kind packages all the Kubernetes node components (kubelet, containerd, etc.) into a single Docker image. When you create a cluster, kind starts one or more containers — one per node — and bootstraps a fully functional Kubernetes cluster inside them.
+
+```text
+Your machine
+└── Docker
+    ├── Container: workshop-control-plane  (Kubernetes control plane)
+    └── Container: workshop-worker         (Kubernetes worker node)
+```
+
+### Why we use kind in this workshop
+
+- **No cloud account required** — everything runs locally inside the dev container
+- **Fast setup** — a cluster is ready in under two minutes
+- **Lightweight** — uses minimal resources, ideal for a laptop or a shared lab environment
+- **Reproducible** — clusters are created from a config file, so everyone starts from the same state
+- **Easy reset** — delete and recreate a cluster in seconds if something goes wrong
+
+### Why kind is not for production
+
+kind is a **development and testing tool only**. You should not run production workloads on it because:
+
+- **Nodes are containers, not real machines** — a container crash or Docker restart wipes the entire cluster
+- **No persistent storage by default** — data does not survive a cluster restart
+- **No real network isolation** — all nodes share the host's Docker network, which differs from how production networking works
+- **No high-availability guarantees** — there is no support for rolling upgrades, node auto-repair, or production SLAs
+- **Resource limits** — it is constrained by your local machine's available CPU and memory
 
 ## Creating Your First Cluster
 
@@ -327,42 +359,6 @@ kind delete cluster --name workshop
 kind create cluster --config /workspaces/compose-to-kubernetes/setup/kind/simple.yaml
 ```
 
-## Lab: Environment Verification
-
-**Time:** 10 minutes
-
-### Tasks
-
-1. **Verify your cluster**
-   - Create the cluster (if not done)
-   - Ensure both nodes are `Ready`
-   - View the kubeconfig
-
-2. **Create and inspect a test Pod**
-   - Create a Pod running `busybox:latest` that sleeps
-   - Check its status
-   - Execute a command inside it
-   - View its logs
-   - Delete it
-
-3. **Explore with k9s**
-   - Launch k9s
-   - Navigate to Pods
-   - Navigate to Nodes
-   - View system Pods in `kube-system` namespace
-
-4. **Test kubectl contexts**
-   - List all contexts
-   - View the current context
-
-### Lab Instructions
-
-See [lab/instructions.md](lab/instructions.md) for detailed steps.
-
-### Solution
-
-After attempting the lab, check [lab/solutions/](lab/solutions/lab-solution.md) for the complete solution.
-
 ## Tips
 
 **Alias kubectl to k:**
@@ -427,7 +423,7 @@ kubectl get nodes
 k9s info
 ```
 
-## Key Takeaways
+## Key takeaways
 
 - **kind** creates local Kubernetes clusters using containers as nodes
 - **kubectl** is the command-line tool to interact with the cluster
@@ -436,13 +432,7 @@ k9s info
 - **k9s** provides a visual interface for cluster management
 - **Namespaces** provide logical separation of resources
 
-## Next Section
-
-Now that your environment is ready, let's dive into Kubernetes resources!
-
- **Next:** [03-pods - Core Kubernetes Resources: Pods](../03-pods/README.md)
-
-## Check Your Understanding
+## Check your understanding
 
 1. What command lists all nodes in your cluster?
 2. How do you view logs from a Pod?
@@ -450,8 +440,8 @@ Now that your environment is ready, let's dive into Kubernetes resources!
 4. What does a context contain?
 5. How do you view Pods in all namespaces?
 
-<details markdown="1">
-<summary>Click for answers</summary>
+<details class="solution" markdown="1">
+<summary>Solution</summary>
 
 1. **`kubectl get nodes`**
 2. **`kubectl logs <pod-name>`**
@@ -460,3 +450,11 @@ Now that your environment is ready, let's dive into Kubernetes resources!
 5. **`kubectl get pods --all-namespaces` or `kubectl get pods -A`**
 
 </details>
+
+## Hands-on
+
+Apply the concepts from this section in the [lab](lab.md) exercises.
+
+## Next section
+
+Once you've reviewed the content and completed the lab, proceed to the [next section](../03-pods/README.md).
